@@ -9,16 +9,16 @@
 
 # Stack
 1. Backend Server
-..* Node.js
-..* Express.js
-..* Pug template machine
-..* Any database
+ * Node.js
+ * Express.js
+ * Pug template machine
+ * Any database
 2. Frontend
-..* Knockout.js
-..* Bootstrap
+ * Knockout.js
+ * Bootstrap
 3. Application
-..* Python GUI
-..* nfc-tools to read nfc cards
+ * Python GUI
+ * nfc-tools to read nfc cards
 
 # Setting up backend server
 1. Install node.js
