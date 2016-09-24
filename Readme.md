@@ -2,8 +2,8 @@
 
 # Main Idea
 * There will be a GUI on a Raspberry Pi with a touchscreen and an attached NFC reader.
-* User can tap one of four buttons to set timer for machines. If card is detected during tap, user will be identified by the system. Else, it'll be anonymous.
-* If system identifies first-time user, it will prompt user to input nickname and phone number using touchscreen. This will then be stored in our backend database.
+* User can tap one of four buttons to set timer for machines. If matric card is placed on NFC reader during tap, user will be identified by the UID of the matric card. Else, user be anonymous.
+* If system does not recognize the UID of the matric card, it will prompt user to input nickname and phone number using touchscreen. This will then be stored in our backend database.
 * When timer is up, notification will be sent to user.
 * Other users can check frontend webpage for *last used by* and *time left*.
 
