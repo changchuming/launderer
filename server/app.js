@@ -8,9 +8,6 @@ app.http().io();
 // Serve-favicon, module to display favicon
 var favicon = require('serve-favicon'); 
 app.use(favicon(__dirname + '/public/img/favicon.ico'));
-// Redis, database module
-var redis = require('redis');
-redisClient = redis.createClient();
 // Standard stuff
 var bodyParser = require("body-parser");
 app.configure(function(){
@@ -20,9 +17,6 @@ app.configure(function(){
 	});
 var http = require('http');
 var path = require('path');
-var multer  = require('multer');
-var done = false;
-var formidable = require('formidable');
 var util = require("util");
 
 //----------------------------------------------------------------------------------------------
@@ -52,18 +46,6 @@ app.use(express.urlencoded());
 app.use(express.methodOverride());
 app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(multer({ dest: './uploads/',
- rename: function (fieldname, filename) {
-    return filename+Date.now();
-  },
-onFileUploadStart: function (file) {
-  console.log(file.originalname + ' is starting ...');
-},
-onFileUploadComplete: function (file) {
-  console.log(file.fieldname + ' uploaded to  ' + file.path);
-  done=true;
-}
-}));
 
 //----------------------------------------------------------------------------------------------
 // Development only
