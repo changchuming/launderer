@@ -20,6 +20,11 @@ var path = require('path');
 var util = require("util");
 
 //----------------------------------------------------------------------------------------------
+// Modules
+//----------------------------------------------------------------------------------------------
+
+
+//----------------------------------------------------------------------------------------------
 // Routes
 //----------------------------------------------------------------------------------------------
 var index = require('./routes');
@@ -29,7 +34,7 @@ var index = require('./routes');
 //----------------------------------------------------------------------------------------------
 app.set('port', process.env.PORT || 80);
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'pug');
+app.set('view engine', 'jsx');
 app.use(express.favicon());
 app.use(express.logger('dev'));
 app.use(express.json());
@@ -55,6 +60,11 @@ app.listen(app.get('port'), function(){
 });
 
 //----------------------------------------------------------------------------------------------
+// Connect to database
+//----------------------------------------------------------------------------------------------
+var database = require('./modules/database').connect('launderer');
+
+//----------------------------------------------------------------------------------------------
 // Socket routes
 //----------------------------------------------------------------------------------------------
 
@@ -67,3 +77,19 @@ app.listen(app.get('port'), function(){
 // Display landing page
 //##############################################################################################
 app.get('/', index.display);
+
+app.post('/checkuser', index.checkUser);
+
+app.post('/adduser', index.addUser);
+
+app.post('/addmachine', index.addMachine);
+
+app.post('/getmachineusage', index.getMachineUsage);
+
+app.post('/setmachineusage', index.setMachineUsage);
+
+app.post('/clearmachineusage', index.clearMachineUsage);
+
+app.post('/getallclusters', index.getAllClusters);
+
+app.post('/addcluster', index.addCluster);

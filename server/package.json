@@ -1,5 +1,5 @@
 {
-  "name": "3Dify.me",
+  "name": "launderer",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -9,13 +9,18 @@
     "async": "^2.0.1",
     "body-parser": "~1.15.2",
     "bower": "~1.7.9",
+    "browserify": "^13.1.0",
     "cookie-parser": "~1.4.3",
     "debug": "~2.2.0",
     "express": "~4.14.0",
     "express.io": "~1.1.13",
     "formidable": "~1.0.17",
-    "pug": "~2.0.0-beta6",
-    "redis": "~2.6.2",
+    "jsx": "^0.9.89",
+    "mongodb": "^2.2.10",
+    "mongoose": "^4.6.2",
+    "react": "^15.3.2",
+    "react-dom": "^15.3.2",
+    "request": "^2.75.0",
     "serve-favicon": "~2.3.0"
   }
 }

@@ -1,0 +1,21 @@
+{
+  "name": "3Dify.me",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www"
+  },
+  "dependencies": {
+    "async": "^2.0.1",
+    "body-parser": "~1.15.2",
+    "bower": "~1.7.9",
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.2.0",
+    "express": "~4.14.0",
+    "express.io": "~1.1.13",
+    "formidable": "~1.0.17",
+    "pug": "~2.0.0-beta6",
+    "redis": "~2.6.2",
+    "serve-favicon": "~2.3.0"
+  }
+}
