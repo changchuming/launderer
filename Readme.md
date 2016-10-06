@@ -7,17 +7,20 @@
 * When timer is up, notification will be sent to user.
 * Other users can check frontend webpage for *last used by: nickname* and *time left*.
 
-# Stack
+# Packages
 1. Backend Server
  * Node.js
  * Express.js
  * Pug template machine
- * Any database
+ * MongoDB
 2. Frontend
- * Knockout.js
+ * Vue.js
+ * Bower
  * Bootstrap
 3. Application
- * Python GUI
+ * Vue.js
+ * Bower
+ * Bootstrap
  * nfc-tools to read nfc cards
 
 # Setting up backend server
@@ -29,3 +32,4 @@
 6. Run `gulp` to include frontend libraries
 7. Pages are included in `/views/` folder
 8. Routes are in `/routes` folder
+9. Source files are located in `/src` and is compiled to `/public`
