@@ -23,7 +23,9 @@
 # Setting up backend server
 1. Install node.js
 2. Do `npm install` to install node dependencies
-3. Use `npm install -g bower` to install bower
+3. Use `npm install bower -g` to install bower
 4. Do `bower install` to install frontend frameworks
-5. Pages are included in `/views/` folder
-6. Routes are in `/routes` folder
+5. Do `npm install gulp -g` to install gulp
+6. Run `gulp` to include frontend libraries
+7. Pages are included in `/views/` folder
+8. Routes are in `/routes` folder

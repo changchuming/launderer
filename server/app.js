@@ -1,20 +1,19 @@
 //----------------------------------------------------------------------------------------------
 // Module dependencies
 //----------------------------------------------------------------------------------------------
-// Express.io, combination of express and socket.io
-var express = require('express.io'); 
-var app = module.exports = express();
-app.http().io();
-// Serve-favicon, module to display favicon
+// Express
+var express = require('express');
+var app = express();
+
+// Middleware
 var favicon = require('serve-favicon'); 
-app.use(favicon(__dirname + '/public/img/favicon.ico'));
-// Standard stuff
-var bodyParser = require("body-parser");
-app.configure(function(){
-	  app.use(bodyParser.json());
-	  app.use(bodyParser.urlencoded({ extended: true }));
-	  app.use(app.router);
-	});
+var bodyParser = require('body-parser');
+var morgan = require('morgan');
+var methodOverride = require('method-override');
+var static = require('serve-static');
+var errorHandler = require('errorhandler');
+
+// Standard stuff	  
 var http = require('http');
 var path = require('path');
 var util = require("util");
@@ -32,32 +31,24 @@ var index = require('./routes');
 //----------------------------------------------------------------------------------------------
 // Express - All environments
 //----------------------------------------------------------------------------------------------
-app.set('port', process.env.PORT || 80);
+var port = process.env.PORT || 80;
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jsx');
-app.use(express.favicon());
-app.use(express.logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded());
-app.use(express.methodOverride());
-app.use(app.router);
-app.use(express.static(path.join(__dirname, 'public')));
+app.set('view engine', 'pug');
+
+app.use(favicon(__dirname + '/public/img/favicon.ico'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(morgan('combined'));
+app.use(methodOverride('_method'));
+app.use(static(__dirname + '/public'))
 
 //----------------------------------------------------------------------------------------------
 // Development only
 //----------------------------------------------------------------------------------------------
 
 if ('development' == app.get('env')) {
-  app.use(express.errorHandler());
+  app.use(errorHandler());
 }
-
-//----------------------------------------------------------------------------------------------
-// Create server and listen to port
-//----------------------------------------------------------------------------------------------
-
-app.listen(app.get('port'), function(){
-   console.log("Express server listening on port " + app.get('port'));
-});
 
 //----------------------------------------------------------------------------------------------
 // Connect to database
@@ -74,22 +65,35 @@ var database = require('./modules/database').connect('launderer');
 // });
 
 //##############################################################################################
-// Display landing page
+// Define router
 //##############################################################################################
-app.get('/', index.display);
 
-app.post('/checkuser', index.checkUser);
+var router = express.Router();
 
-app.post('/adduser', index.addUser);
+router.get('/', index.display);
 
-app.post('/addmachine', index.addMachine);
+router.post('/checkuser', index.checkUser);
 
-app.post('/getmachineusage', index.getMachineUsage);
+router.post('/adduser', index.addUser);
 
-app.post('/setmachineusage', index.setMachineUsage);
+router.post('/addmachine', index.addMachine);
 
-app.post('/clearmachineusage', index.clearMachineUsage);
+router.post('/getmachineusage', index.getMachineUsage);
 
-app.post('/getallclusters', index.getAllClusters);
+router.post('/setmachineusage', index.setMachineUsage);
 
-app.post('/addcluster', index.addCluster);
+router.post('/clearmachineusage', index.clearMachineUsage);
+
+router.post('/getallclusters', index.getAllClusters);
+
+router.post('/addcluster', index.addCluster);
+
+app.use('/', router);
+
+//----------------------------------------------------------------------------------------------
+// Create server and listen to port
+//----------------------------------------------------------------------------------------------
+
+app.listen(port, function(){
+   console.log("Express server listening on port " + port);
+});

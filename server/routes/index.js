@@ -9,7 +9,8 @@
  
 var database = require('../modules/database');
 var jobTimers = {};
-var timeout = {washer: 2100000, dryer: 1800000, coin: Number.MAX_VALUE};
+var jobTimeStart = {};
+var timeout = {Washer: 2100000, Dryer: 1800000, Coin: Number.MAX_VALUE};
 
 //##############################################################################################
 // Display home page
@@ -33,8 +34,9 @@ exports.about = function(req, res){
 //##############################################################################################
 exports.checkUser = function(req, res) {
 	database.getUserField(req.body.id, 'name', function (err, user){
-		if (err) {
-			console.log(err);
+		if (err || !user) {
+			if (err)
+				console.log(err);
 			res.send(false);
 		}
 		else if (!user) {
@@ -60,67 +62,6 @@ exports.addUser = function(req, res) {
 }
 
 //##############################################################################################
-// Add machine to database
-//##############################################################################################
-exports.addMachine = function(req, res) {
-	database.newMachine(req.body.id, req.body.type, '00000000', function (err) {
-		if (err) {
-			console.log(err);
-			res.send(false);
-		} else {
-			res.send(true);
-		}
-	});
-}
-
-//##############################################################################################
-// Get last user of machine
-//##############################################################################################
-exports.getMachineUsage = function(req, res) {
-	database.getMachineField(req.body.id, 'userid', function (err, machine) {
-		if (err || !machine) {
-			if (err)
-				console.log(err);
-			database.newUser('00000000', 'None', '00000000');
-			database.upsertMachineField(req.body.id, 'userid', '00000000');
-			res.send('None');
-		}
-		else {
-			database.getUserField(machine.userid, 'name', function (err, user){
-				if (err || !user) {
-					if (err)
-						console.log(err);
-					res.send('None');
-				} else {
-					res.send(user.name);
-				}
-			});
-		}
-	});
-}
-
-//##############################################################################################
-// Set last user of machine
-//##############################################################################################
-exports.setMachineUsage = function(req, res) {
-	database.upsertMachineField(req.body.id, 'userid', req.body.userid, function(err,result) {
-		if (err)
-			console.log(err);
-	});
-	database.getMachineField(req.body.id, 'type', function (err, machine) {
-		jobTimers[req.body.id] = setTimeout(alertMachineUser, timeout[machine.type], req.body.id);
-	});
-}
-
-//##############################################################################################
-// Clear machine timer
-//##############################################################################################
-exports.clearMachineUsage = function(req, res) {
-	database.upsertMachineField(req.body.id, 'userid', '00000000');
-	clearTimeout(jobTimers[req.body.id]);
-}
-
-//##############################################################################################
 // Get all collections of machines
 //##############################################################################################
 exports.getAllClusters = function(req, res) {
@@ -128,7 +69,7 @@ exports.getAllClusters = function(req, res) {
 		if (err || !clusters) {
 			if (err)
 				console.log(err);
-			res.send('No clusters!'); 
+			res.send(false); 
 		} else {
 			res.send(clusters);
 		}
@@ -139,19 +80,109 @@ exports.getAllClusters = function(req, res) {
 // Adds a collection of machines
 //##############################################################################################
 exports.addCluster = function(req, res) {
-	database.upsertClusterField(req.body.id, 'number', req.body.number, function(err,result) {
-		if (err)
+	database.newCluster(req.body.name, function(err, cluster, result) {
+		if (err || !result) {
+			if (err)
+				console.log(err);
+			res.send(false);
+		}
+		else {
+			res.send(true);
+		}
+	});
+}
+
+//##############################################################################################
+// Add machine to database
+//##############################################################################################
+exports.addMachine = function(req, res) {
+	database.newMachine(req.body.clustername, req.body.type, function (err) {
+		if (err) {
 			console.log(err);
-		console.log(result);
+			res.send(false);
+		} else {
+			res.send(true);
+		}
+	});
+}
+
+//##############################################################################################
+// Set last user of machine
+//##############################################################################################
+exports.setMachineUsage = function(req, res) {
+	database.upsertMachineField(req.body.clustername, req.body.index, 'userid', req.body.userid, function(err, cluster) {
+		console.log(req.body.clustername+req.body.index);
+		if (err || !cluster) {
+			if (err)
+				console.log(err);
+			res.send(false);
+		}
+		else {
+			console.log(cluster);
+			var timestart = Date.now();
+			if (!jobTimers[req.body.clustername])
+				jobTimers[req.body.clustername] = [];
+			var type = cluster.machines[req.body.index].type;
+			
+			// Set new job timer
+			clearTimeout(jobTimers[req.body.clustername][req.body.index]);
+			jobTimers[req.body.clustername][req.body.index] = setTimeout(alertMachineUser, timeout[type], req.body.clustername, req.body.index);
+			
+			// Save starting time
+			if (!jobTimeStart[req.body.clustername])
+				jobTimeStart[req.body.clustername] = [];
+			jobTimeStart[req.body.clustername][req.body.index] = timestart;
+			res.send(true);
+		}
+	});
+}
+
+//##############################################################################################
+// Clear machine timer
+//##############################################################################################
+exports.clearMachineUsage = function(req, res) {
+	database.upsertMachineField(req.body.clustername, req.body.index, 'userid', '00000000');
+	clearTimeout(jobTimers[req.body.clustername][req.body.index]);
+}
+
+
+//##############################################################################################
+// Get machine usage
+//##############################################################################################
+exports.getMachineUsage = function(req, res) {
+	database.getMachine(req.body.clustername, req.body.index, function(err, machine) {
+		if (err || !machine) {
+			if (err)
+				console.log(err);
+			res.send(false);
+		}
+		else {
+			var userid = machine.userid;
+			database.getUserField(machine.userid, 'name', function (err, user){
+				if (err || !user) {
+					res.send(false);
+					if (err)
+						console.log(err);
+				} else {
+					if (jobTimeStart[req.body.clustername]) {
+						var timeleft = jobTimeStart[req.body.clustername][req.body.index]+timeout[machine.type]
+										- Date.now();
+						res.send({username: user.name, timeleft: timeleft, timeout: timeout[machine.type]});
+					} else {
+						res.send({username: user.name, timeleft: 0, timeout: timeout[machine.type]});
+					}
+				}
+			});
+		}
 	});
 }
 
 //##############################################################################################
 // Alerts user when timer is up
 //##############################################################################################
-var alertMachineUser = function(id) {
+var alertMachineUser = function(clustername, index) {
 	console.log('Alert user!');
-	database.getMachineField(id, 'userid', function(err, machine) {
+	database.getMachine(clustername, index, function(err, machine) {
 		if (err) {
 			console.log(err);
 		} else if (machine.userid && machine.userid != '00000000') {

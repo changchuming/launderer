@@ -1,67 +1,22 @@
 extends layout
 
 block styles
-  link(rel='stylesheet', type='text/css', href='/css/index.css')
 block content
   .main
     .main-body
-      .container
-        .panel.panel-success
+      #cluster.container
+        .panel.panel-default(v-for='cluster in clusters')
           .panel-heading
-            h3 Dragon
+            h3 {{ cluster.name }}
           .panel-body
             .row
-              .col-md-3
-                p.machine Dryer 1
+              .col-sm-6.col-md-3(v-for='machine in cluster.machines')
+                p.machine {{ cluster.machines.indexOf(machine)+1 }} : {{ machine.type }}
+                p.machine Last used: {{ machine.username }}
                 .progress
-                  .progress-bar(role='progressbar', aria-valuenow='60', aria-valuemin='0', aria-valuemax='100', style='width: 60%;')
-                    | 21:55
-              .col-md-3
-                p.machine Dryer 2
-                .progress
-                  .progress-bar(role='progressbar', aria-valuenow='60', aria-valuemin='0', aria-valuemax='100', style='width: 50%;')
-                    | 20:55
-              .col-md-3
-                p.machine Washer 1
-                .progress
-                  .progress-bar(role='progressbar', aria-valuenow='60', aria-valuemin='0', aria-valuemax='100', style='width: 40%;')
-                    | 15:55
-              .col-md-3
-                p.machine Washer 2
-                .progress
-                  .progress-bar(role='progressbar', aria-valuenow='60', aria-valuemin='0', aria-valuemax='100', style='width: 30%;')
-                    | 10:55
-            .row(data-bind='foreach: picArray')
-        .panel.panel-danger
-          .panel-heading
-            h3 Phoenix
-          .panel-body
-            .row
-              .col-md-3
-                p.machine Dryer 1
-                .progress
-                  .progress-bar(role='progressbar', aria-valuenow='60', aria-valuemin='0', aria-valuemax='100', style='width: 60%;')
-                    | 21:55
-              .col-md-3
-                p.machine Dryer 2
-                .progress
-                  .progress-bar(role='progressbar', aria-valuenow='60', aria-valuemin='0', aria-valuemax='100', style='width: 50%;')
-                    | 20:55
-              .col-md-3
-                p.machine Washer 1
-                .progress
-                  .progress-bar(role='progressbar', aria-valuenow='60', aria-valuemin='0', aria-valuemax='100', style='width: 40%;')
-                    | 15:55
-              .col-md-3
-                p.machine Washer 2
-                .progress
-                  .progress-bar(role='progressbar', aria-valuenow='60', aria-valuemin='0', aria-valuemax='100', style='width: 30%;')
-                    | 10:55
-            .row(data-bind='foreach: picArray')
+                  .progress-bar(role='progressbar', aria-valuenow='60', aria-valuemin='0', aria-valuemax='100', v-bind:style="{width: machine.percent()+'%'}")
+                    | {{ machine.minutes() }}:{{ machine.seconds() }}
 block footer
 block scripts
   // Server variables
   script.
-  // Socket.io
-  script(src='/socket.io/socket.io.js', type='text/javascript')
-  script(src='js/index.js')

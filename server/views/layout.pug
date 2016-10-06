@@ -6,14 +6,8 @@ html
     meta(name='viewport', content='width=device-width, initial-scale=1')
     meta(name='description', content='')
     meta(name='author', content='')
-    meta(property='og:image', content='/img/Diagram2.jpg')
     title= title
-    link(rel='stylesheet', type='text/css', href='/components/bootstrap-css/css/bootstrap.min.css')
-    link(rel='stylesheet', type='text/css', href='components/font-awesome/css/font-awesome.min.css')
-    link(rel='stylesheet', type='text/css', href='/css/grayscale.css')
-    // Custom css fonts
-    link(rel='stylesheet', type='text/css', href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic')
-    link(rel='stylesheet', type='text/css', href='http://fonts.googleapis.com/css?family=Montserrat:400,700')
+    link(rel='stylesheet', type='text/css', href='/css/main.css')
     block styles
     
   body#page-top(data-spy='scroll', data-target='.navbar-fixed-top')
@@ -49,16 +43,6 @@ html
     .footer.text-center
       p Copyright © Launderer
     block footer
-    // HTML5 Shim IE8 support of HTML5 elements and media queries
-    script(src='https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js')
-    // HTML5 Respond.js IE8 support of HTML5 elements and media queries
-    script(src='https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js')
-    // Jquery
-    script(src='components/jquery/dist/jquery.min.js')
-    // Bootstrap Core JavaScript
-    script(src='components/bootstrap-css/js/bootstrap.min.js', type='text/javascript')
-    // Plugin JavaScript
-    script(src='components/jquery.easing/js/jquery.easing.min.js')
-    // Custom Theme JavaScript
-    script(src='js/grayscale.js')
+    // Gulped file
+    script(src='js/main.js')
     block scripts
