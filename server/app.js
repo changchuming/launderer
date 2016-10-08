@@ -16,6 +16,7 @@ var errorHandler = require('errorhandler');
 // Standard stuff	  
 var http = require('http');
 var path = require('path');
+var fs = require('fs');
 var util = require("util");
 
 //----------------------------------------------------------------------------------------------
@@ -51,9 +52,18 @@ if ('development' == app.get('env')) {
 }
 
 //----------------------------------------------------------------------------------------------
-// Connect to database
+// Connect to database and tropo (for sms)
 //----------------------------------------------------------------------------------------------
 var database = require('./modules/database').connect('launderer');
+
+// Overload log function to write to file
+var log_file = fs.createWriteStream(__dirname + '/debug.log', {flags : 'w'});
+var log_stdout = process.stdout;
+
+console.log = function(d) { //
+	log_file.write(util.format(d) + '\n');
+	log_stdout.write(util.format(d) + '\n');
+};
 
 //----------------------------------------------------------------------------------------------
 // Socket routes

@@ -15,13 +15,15 @@
     "express": "^4.14.0",
     "formidable": "~1.0.17",
     "method-override": "^2.3.6",
+    "moment": "^2.15.1",
     "mongodb": "^2.2.10",
     "mongoose": "^4.6.2",
     "morgan": "^1.7.0",
     "pug": "^2.0.0-beta6",
     "request": "^2.75.0",
     "serve-favicon": "^2.3.0",
-    "serve-static": "^1.11.1"
+    "serve-static": "^1.11.1",
+    "twilio": "^2.11.0"
   },
   "devDependencies": {
     "gulp": "^3.9.1",

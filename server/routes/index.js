@@ -7,7 +7,9 @@
 // Module dependencies
 //----------------------------------------------------------------------------------------------
  
+var moment = require('moment');
 var database = require('../modules/database');
+var sms = require('../modules/sms');
 var jobTimers = {};
 var jobTimeStart = {};
 var timeout = {Washer: 2100000, Dryer: 1800000, Coin: Number.MAX_VALUE};
@@ -20,6 +22,17 @@ exports.display = function(req, res){
   	res.render('index', {
   		title: 'Launderer',
   	});
+  	var message = 'hi';
+  	// var message = 'Your laundry is done on ' + moment().format("h:mm:ss a, dddd, MMMM Do YYYY" + '.');
+	sms.sendSMS(message, '+6590437467', function(err, message) {
+		if (err || !user) {
+			if (err)
+				console.log(err);
+			res.send(false);
+		} else {
+			console.log(message.sid);
+		}
+	});
 };
 
 //##############################################################################################
@@ -186,7 +199,23 @@ var alertMachineUser = function(clustername, index) {
 		if (err) {
 			console.log(err);
 		} else if (machine.userid && machine.userid != '00000000') {
-			// Alert user
+		  	var message = 'Your laundry is done on ' + moment().format("h:mm:ss a, dddd, MMMM Do YYYY" + '.');
+			database.getUserField(req.body.id, 'number', function (err, user){
+				if (err || !user) {
+					if (err)
+						console.log(err);
+				} else {
+				  	// var message = 'Your laundry is done on ' + moment().format("h:mm:ss a, dddd, MMMM Do YYYY" + '.');
+					sms.sendSMS(message, user.number, function(err, message) {
+						if (err || !user) {
+							if (err)
+								console.log(err);
+						} else {
+							console.log(message.sid);
+						}
+					});
+				}
+			});
 		}
 	});
 }
