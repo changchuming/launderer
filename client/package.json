@@ -1,5 +1,5 @@
 {
-  "name": "3Dify.me",
+  "name": "launderer",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -11,11 +11,34 @@
     "bower": "~1.7.9",
     "cookie-parser": "~1.4.3",
     "debug": "~2.2.0",
-    "express": "~4.14.0",
-    "express.io": "~1.1.13",
-    "formidable": "~1.0.17",
-    "pug": "~2.0.0-beta6",
-    "redis": "~2.6.2",
-    "serve-favicon": "~2.3.0"
+    "errorhandler": "^1.4.3",
+    "express": "^4.14.0",
+    "method-override": "^2.3.6",
+    "moment": "^2.15.1",
+    "morgan": "^1.7.0",
+    "pug": "^2.0.0-beta6",
+    "request": "^2.75.0",
+    "serve-favicon": "^2.3.0",
+    "serve-static": "^1.11.1"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-changed": "^1.3.2",
+    "gulp-compass": "^2.1.0",
+    "gulp-concat": "^2.6.0",
+    "gulp-filter": "^4.0.0",
+    "gulp-flatten": "^0.3.1",
+    "gulp-ignore": "^2.0.1",
+    "gulp-imagemin": "^3.0.3",
+    "gulp-jshint": "^2.0.1",
+    "gulp-livereload": "^3.8.1",
+    "gulp-load-plugins": "^1.3.0",
+    "gulp-notify": "^2.2.0",
+    "gulp-order": "^1.1.1",
+    "gulp-plumber": "^1.1.0",
+    "gulp-strip-debug": "^1.1.0",
+    "gulp-uglify": "^2.0.0",
+    "jshint": "^2.9.3",
+    "main-bower-files": "^2.13.1"
   }
 }

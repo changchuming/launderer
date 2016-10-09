@@ -12,7 +12,6 @@ var database = require('../modules/database');
 var sms = require('../modules/sms');
 var jobTimers = {};
 var jobTimeStart = {};
-var timeout = {Washer: 2100000, Dryer: 1800000, Coin: Number.MAX_VALUE};
 
 //##############################################################################################
 // Display home page
@@ -28,7 +27,6 @@ exports.display = function(req, res){
 		if (err || !user) {
 			if (err)
 				console.log(err);
-			res.send(false);
 		} else {
 			console.log(message.sid);
 		}
@@ -109,7 +107,7 @@ exports.addCluster = function(req, res) {
 // Add machine to database
 //##############################################################################################
 exports.addMachine = function(req, res) {
-	database.newMachine(req.body.clustername, req.body.type, function (err) {
+	database.newMachine(req.body.clustername, req.body.type, req.body.timeout, function (err) {
 		if (err) {
 			console.log(err);
 			res.send(false);
@@ -124,27 +122,25 @@ exports.addMachine = function(req, res) {
 //##############################################################################################
 exports.setMachineUsage = function(req, res) {
 	database.upsertMachineField(req.body.clustername, req.body.index, 'userid', req.body.userid, function(err, cluster) {
-		console.log(req.body.clustername+req.body.index);
 		if (err || !cluster) {
 			if (err)
 				console.log(err);
 			res.send(false);
 		}
 		else {
-			console.log(cluster);
-			var timestart = Date.now();
 			if (!jobTimers[req.body.clustername])
 				jobTimers[req.body.clustername] = [];
-			var type = cluster.machines[req.body.index].type;
 			
 			// Set new job timer
-			clearTimeout(jobTimers[req.body.clustername][req.body.index]);
-			jobTimers[req.body.clustername][req.body.index] = setTimeout(alertMachineUser, timeout[type], req.body.clustername, req.body.index);
-			
+			if (jobTimers[req.body.clustername][req.body.index])
+				clearTimeout(jobTimers[req.body.clustername][req.body.index]);
+			jobTimers[req.body.clustername][req.body.index] = setTimeout(alertMachineUser, cluster.machines[req.body.index].timeout*1000,
+				req.body.clustername, req.body.index);
+
 			// Save starting time
 			if (!jobTimeStart[req.body.clustername])
 				jobTimeStart[req.body.clustername] = [];
-			jobTimeStart[req.body.clustername][req.body.index] = timestart;
+			jobTimeStart[req.body.clustername][req.body.index] = moment();
 			res.send(true);
 		}
 	});
@@ -154,7 +150,9 @@ exports.setMachineUsage = function(req, res) {
 // Clear machine timer
 //##############################################################################################
 exports.clearMachineUsage = function(req, res) {
-	database.upsertMachineField(req.body.clustername, req.body.index, 'userid', '00000000');
+	if (!jobTimeStart[req.body.clustername])
+		jobTimeStart[req.body.clustername] = [];
+	jobTimeStart[req.body.clustername][req.body.index] = false;
 	clearTimeout(jobTimers[req.body.clustername][req.body.index]);
 }
 
@@ -177,12 +175,14 @@ exports.getMachineUsage = function(req, res) {
 					if (err)
 						console.log(err);
 				} else {
-					if (jobTimeStart[req.body.clustername]) {
-						var timeleft = jobTimeStart[req.body.clustername][req.body.index]+timeout[machine.type]
-										- Date.now();
-						res.send({username: user.name, timeleft: timeleft, timeout: timeout[machine.type]});
+					if (!jobTimeStart[req.body.clustername])
+						jobTimeStart[req.body.clustername] = [];
+					if (jobTimeStart[req.body.clustername][req.body.index]) {
+						var timestart = moment(jobTimeStart[req.body.clustername][req.body.index]);
+						var timeleft = machine.timeout - moment().diff(timestart, 'seconds');
+						res.send({username: user.name, timeleft: timeleft, timeout: machine.timeout});
 					} else {
-						res.send({username: user.name, timeleft: 0, timeout: timeout[machine.type]});
+						res.send({username: user.name, timeleft: 0, timeout: machine.timeout});
 					}
 				}
 			});
@@ -207,7 +207,7 @@ var alertMachineUser = function(clustername, index) {
 				} else {
 				  	// var message = 'Your laundry is done on ' + moment().format("h:mm:ss a, dddd, MMMM Do YYYY" + '.');
 					sms.sendSMS(message, user.number, function(err, message) {
-						if (err || !user) {
+						if (err || !message) {
 							if (err)
 								console.log(err);
 						} else {

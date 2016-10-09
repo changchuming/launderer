@@ -24,11 +24,14 @@
     "html5shiv": "^3.7.3",
     "respond": "^1.4.2",
     "lora-googlefont": "*",
-    "vue": "^2.0.1"
+    "vue": "^2.0.1",
+    "moment": "^2.15.1"
   },
   "overrides": {
-        "vue": {
-            "main": ["./dist/vue.min.js"]
-        }
+    "vue": {
+      "main": [
+        "./dist/vue.min.js"
+      ]
     }
+  }
 }

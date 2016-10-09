@@ -14,7 +14,6 @@ var User = mongoose.model('User', userSchema);
 // Machine definition
 var machineSchema = new mongoose.Schema({
 	type: {type: String, required : true },
-	timeout: {type: Number, required: true},
 	userid: {type: String, required : true }
 });
 var Machine = mongoose.model('Machine', machineSchema);
@@ -45,8 +44,8 @@ exports.upsertUserField = function(id, field, data, callback) {
 	User.findOneAndUpdate({id: id}, { $set: {[field]: data}}, {upsert:true}, callback);
 };
 
-exports.newMachine = function(clustername, type, timeout, callback) {
-	var machine = new Machine({ type: type, timeout: timeout, userid: '00000000'});
+exports.newMachine = function(clustername, type, callback) {
+	var machine = new Machine({ type: type, userid: '00000000'});
 	Cluster.findOneAndUpdate({name: clustername}, {$push: {machines: machine}}, {new: true},  callback);
 }
 
@@ -64,6 +63,7 @@ exports.upsertMachineField = function(clustername, index, field, data, callback)
 		if (err || !cluster)
 			callback(err, cluster);
 		else {
+			console.log(cluster);
 			cluster.machines[index][field] = data;
 			cluster.save(callback);
 		}

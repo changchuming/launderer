@@ -4,10 +4,6 @@
  * For details, see http://www.apache.org/licenses/LICENSE-2.0.
  */
 
-.fb-like {
-    padding-left: 50px;
-}
-
 .center {
      float: none;
      margin-left: auto;
@@ -19,7 +15,6 @@ body {
     height: 93%;
     font-family: Lora,"Helvetica Neue",Helvetica,Arial,sans-serif;
     color: #fff;
-    background: url(../img/intro-bg.jpg) repeat bottom center;
     background-attachment: fixed;
     background-color: #000;
     -webkit-background-size: cover;
@@ -59,9 +54,6 @@ p {
     line-height: 1.5;
 }
 
-p.machine {
-    color: #000;
-}
 
 @media(min-width:768px) {
     p {
@@ -69,10 +61,6 @@ p.machine {
         margin: 0 0px;
         font-size: 20px;
         line-height: 1.6;
-    }
-
-    p.machine {
-        color: #000;
     }
 }
 
@@ -283,7 +271,7 @@ a:focus {
     }
 }
 
-.btn {
+/*.btn {
     border-radius: 0;
     text-transform: uppercase;
     font-family: Montserrat,"Helvetica Neue",Helvetica,Arial,sans-serif;
@@ -305,7 +293,7 @@ a:focus {
     outline: 0;
     color: #000;
     background-color: #42dca3;
-}
+}*/
 
 ul.banner-social-buttons {
     margin-top: 0;

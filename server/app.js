@@ -32,7 +32,7 @@ var index = require('./routes');
 //----------------------------------------------------------------------------------------------
 // Express - All environments
 //----------------------------------------------------------------------------------------------
-var port = process.env.PORT || 80;
+var port = process.env.PORT || 3000;
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
@@ -66,6 +66,14 @@ console.log = function(d) { //
 };
 
 //----------------------------------------------------------------------------------------------
+// Create server and listen to port
+//----------------------------------------------------------------------------------------------
+
+app.listen(port, function(){
+   console.log("Express server listening on port " + port);
+});
+
+//----------------------------------------------------------------------------------------------
 // Socket routes
 //----------------------------------------------------------------------------------------------
 
@@ -80,7 +88,11 @@ console.log = function(d) { //
 
 var router = express.Router();
 
+app.use('/', router);
+
 router.get('/', index.display);
+
+router.get('/about', index.about);
 
 router.post('/checkuser', index.checkUser);
 
@@ -97,13 +109,3 @@ router.post('/clearmachineusage', index.clearMachineUsage);
 router.post('/getallclusters', index.getAllClusters);
 
 router.post('/addcluster', index.addCluster);
-
-app.use('/', router);
-
-//----------------------------------------------------------------------------------------------
-// Create server and listen to port
-//----------------------------------------------------------------------------------------------
-
-app.listen(port, function(){
-   console.log("Express server listening on port " + port);
-});

@@ -1,23 +1,28 @@
 //----------------------------------------------------------------------------------------------
 // Module dependencies
 //----------------------------------------------------------------------------------------------
-// Express.io, combination of express and socket.io
-var express = require('express.io'); 
-var app = module.exports = express();
-app.http().io();
-// Serve-favicon, module to display favicon
+// Express
+var express = require('express');
+var app = express();
+
+// Middleware
 var favicon = require('serve-favicon'); 
-app.use(favicon(__dirname + '/public/img/favicon.ico'));
-// Standard stuff
-var bodyParser = require("body-parser");
-app.configure(function(){
-	  app.use(bodyParser.json());
-	  app.use(bodyParser.urlencoded({ extended: true }));
-	  app.use(app.router);
-	});
+var bodyParser = require('body-parser');
+var morgan = require('morgan');
+var methodOverride = require('method-override');
+var static = require('serve-static');
+var errorHandler = require('errorhandler');
+
+// Standard stuff	  
 var http = require('http');
 var path = require('path');
+var fs = require('fs');
 var util = require("util");
+
+//----------------------------------------------------------------------------------------------
+// Modules
+//----------------------------------------------------------------------------------------------
+
 
 //----------------------------------------------------------------------------------------------
 // Routes
@@ -27,31 +32,43 @@ var index = require('./routes');
 //----------------------------------------------------------------------------------------------
 // Express - All environments
 //----------------------------------------------------------------------------------------------
-app.set('port', process.env.PORT || 80);
+var port = process.env.PORT || 80;
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
-app.use(express.favicon());
-app.use(express.logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded());
-app.use(express.methodOverride());
-app.use(app.router);
-app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(favicon(__dirname + '/public/img/favicon.ico'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(morgan('combined'));
+app.use(methodOverride('_method'));
+app.use(static(__dirname + '/public'))
 
 //----------------------------------------------------------------------------------------------
 // Development only
 //----------------------------------------------------------------------------------------------
 
 if ('development' == app.get('env')) {
-  app.use(express.errorHandler());
+  app.use(errorHandler());
 }
+
+//----------------------------------------------------------------------------------------------
+// Connect to database and tropo (for sms)
+//----------------------------------------------------------------------------------------------
+// Overload log function to write to file
+var log_file = fs.createWriteStream(__dirname + '/debug.log', {flags : 'w'});
+var log_stdout = process.stdout;
+
+console.log = function(d) { //
+	log_file.write(util.format(d) + '\n');
+	log_stdout.write(util.format(d) + '\n');
+};
 
 //----------------------------------------------------------------------------------------------
 // Create server and listen to port
 //----------------------------------------------------------------------------------------------
 
-app.listen(app.get('port'), function(){
-   console.log("Express server listening on port " + app.get('port'));
+app.listen(port, function(){
+   console.log("Express server listening on port " + port);
 });
 
 //----------------------------------------------------------------------------------------------
@@ -64,6 +81,13 @@ app.listen(app.get('port'), function(){
 // });
 
 //##############################################################################################
-// Display landing page
+// Define router
 //##############################################################################################
-app.get('/', index.display);
+
+var router = express.Router();
+
+app.use('/', router);
+
+router.get('/', index.display);
+
+router.get('/about', index.about);

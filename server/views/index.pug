@@ -15,7 +15,7 @@ block content
                 p.machine Last used: {{ machine.username }}
                 .progress
                   .progress-bar(role='progressbar', aria-valuenow='60', aria-valuemin='0', aria-valuemax='100', v-bind:style="{width: machine.percent()+'%'}")
-                    | {{ machine.minutes() }}:{{ machine.seconds() }}
+                    | {{ machine.display() }}
 block footer
 block scripts
   // Server variables

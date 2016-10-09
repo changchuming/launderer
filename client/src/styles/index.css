@@ -1,0 +1,59 @@
+.starter-template {
+  padding: 40px 15px;
+  text-align: center;
+}
+
+.main {
+    padding-top: 50px !important;
+}
+
+#register {
+    padding-left: 6em;
+    padding-right: 6em;
+}
+
+#idle, html, body{
+    height: 100%;
+}
+
+.machine {
+    height: 100%;
+    background-size: cover !important;                      /* <------ */
+    background-repeat: no-repeat !important;
+    background-position: center center !important; 
+}
+
+.message {
+    font-size: 2em !important;
+    font-weight: bold;
+}
+
+body {
+    background: url(../img/intro-bg.jpg) repeat bottom center;
+}
+
+/* Keyboard */
+.keyboard {
+    font-size: 1.6em !important;
+    color: #000;
+}
+
+@media(min-width:768px) {
+    .keyboard {
+        color: #000;
+    }
+}
+
+.fb-like {
+    padding-left: 50px;
+}
+
+.ui-keyboard-button {
+    min-width: 4.4em !important;
+    height: 4.5em !important;
+}
+
+.ui-keyboard-text {
+    font-size: 1.6em !important;
+    color: #000;
+}
