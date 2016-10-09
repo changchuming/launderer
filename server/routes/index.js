@@ -140,9 +140,12 @@ exports.setMachineUsage = function(req, res) {
 // Clear machine timer
 //##############################################################################################
 exports.clearMachineUsage = function(req, res) {
+	// Clear time start if exists
 	if (!jobTimeStart[req.body.clustername])
 		jobTimeStart[req.body.clustername] = [];
 	jobTimeStart[req.body.clustername][req.body.index] = false;
+
+	// Clear job if exists
 	if (!jobTimers[req.body.clustername])
 		jobTimers[req.body.clustername] = [];
 	clearTimeout(jobTimers[req.body.clustername][req.body.index]);

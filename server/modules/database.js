@@ -64,8 +64,12 @@ exports.upsertMachineField = function(clustername, index, field, data, callback)
 		if (err || !cluster)
 			callback(err, cluster);
 		else {
-			cluster.machines[index][field] = data;
-			cluster.save(callback);
+			if (!cluster.machines[index]) {
+				callback(err, cluster);
+			} else {
+				cluster.machines[index][field] = data;
+				cluster.save(callback);
+			}
 		}
 	});
 }
