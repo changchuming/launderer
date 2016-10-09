@@ -143,6 +143,8 @@ exports.clearMachineUsage = function(req, res) {
 	if (!jobTimeStart[req.body.clustername])
 		jobTimeStart[req.body.clustername] = [];
 	jobTimeStart[req.body.clustername][req.body.index] = false;
+	if (!jobTimers[req.body.clustername])
+		jobTimers[req.body.clustername] = [];
 	clearTimeout(jobTimers[req.body.clustername][req.body.index]);
 }
 

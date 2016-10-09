@@ -2,7 +2,11 @@ extends layout
 
 block styles
 block content
-  #idle
+  #cluster.container
+    #four.container(v-if='machines.length == 4')
+      .machine.col-md-3(v-for='machine in machines')
+    #five.container(v-if='machines.length == 5')
+      .machine.col-md-2(v-for='machine in machines')
   .main
     .main-body
       #register

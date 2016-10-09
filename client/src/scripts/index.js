@@ -5,7 +5,6 @@ $('#register').hide();
 server = 'http://128.199.172.201:3000';
 
 $.post(server + '/addcluster', {name: 'GARUDA'}, function(data, status, xhr) {
- console.log(data);
 
  $.post(server + '/addmachine', {clustername: 'GARUDA', type: 'Dryer', timeout: '1800'}, function(data, status, xhr) {
    console.log(data);
@@ -24,25 +23,46 @@ $.post(server + '/addcluster', {name: 'GARUDA'}, function(data, status, xhr) {
  });
 });
 
-// $.post('/adduser', {id:'00000000', name: 'lol', number: '00000000'}, function(data, status, xhr) {
-//  console.log(data);
-// });
+var vueVM = new Vue({
+  el: '#cluster',
+  data: {
+    title: 'GARUDA',
+    machines: []
+  }
+});
 
-// $.post('/setmachineusage', {clustername:'GARUDA', index: 0, userid: '00000000'}, function(data, status, xhr) {
-//  console.log(data);
-// });
+vueVM.machines.push({type: 'Dryer', timeout: 1800});
+vueVM.machines.push({type: 'Dryer', timeout: 1800});
+vueVM.machines.push({type: 'Washer', timeout: 1800});
+vueVM.machines.push({type: 'Washer', timeout: 1800});
 
-// $.post('/setmachineusage', {clustername:'GARUDA', index: 1, userid: '00000000'}, function(data, status, xhr) {
-//  console.log(data);
-// });
+$.post(server + '/addcluster', {name: vueVM.title}, function(data, status, xhr) {
+  vueVM.machines.forEach(function(machine) {
+     $.post(server + '/addmachine', {clustername: vueVM.title, type: machine.type, timeout: machine.timeout}, function(data, status, xhr) {
+       console.log(data);
+     });
+  });
+});
 
-// $.post('/setmachineusage', {clustername:'GARUDA', index: 3, userid: '00000000'}, function(data, status, xhr) {
-//  console.log(data);
-// });
+$.post(server + '/adduser', {id:'00000000', name: 'lol', number: '00000000'}, function(data, status, xhr) {
+ console.log(data);
+});
 
-// $.post('/clearmachineusage', {clustername:'GARUDA', index: 3}, function(data, status, xhr) {
-//  console.log(data);
-// });
+$.post(server + '/setmachineusage', {clustername:'GARUDA', index: 0, userid: '00000000'}, function(data, status, xhr) {
+ console.log(data);
+});
+
+$.post(server + '/setmachineusage', {clustername:'GARUDA', index: 1, userid: '00000000'}, function(data, status, xhr) {
+ console.log(data);
+});
+
+$.post(server + '/setmachineusage', {clustername:'GARUDA', index: 3, userid: '00000000'}, function(data, status, xhr) {
+ console.log(data);
+});
+
+$.post(server + '/clearmachineusage', {clustername:'GARUDA', index: 3}, function(data, status, xhr) {
+ console.log(data);
+});
 
 // Keyboard for name field
 $('#name').keyboard({
