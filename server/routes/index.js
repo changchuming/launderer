@@ -21,16 +21,6 @@ exports.display = function(req, res){
   	res.render('index', {
   		title: 'Launderer',
   	});
-  	var message = 'hi';
-  	// var message = 'Your laundry is done on ' + moment().format("h:mm:ss a, dddd, MMMM Do YYYY" + '.');
-	sms.sendSMS(message, '+6590437467', function(err, message) {
-		if (err || !user) {
-			if (err)
-				console.log(err);
-		} else {
-			console.log(message.sid);
-		}
-	});
 };
 
 //##############################################################################################
