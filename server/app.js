@@ -12,6 +12,7 @@ var morgan = require('morgan');
 var methodOverride = require('method-override');
 var static = require('serve-static');
 var errorHandler = require('errorhandler');
+var cors = require('cors');
 
 // Standard stuff	  
 var http = require('http');
@@ -41,7 +42,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(morgan('combined'));
 app.use(methodOverride('_method'));
-app.use(static(__dirname + '/public'))
+app.use(static(__dirname + '/public'));
+app.use(cors());
 
 //----------------------------------------------------------------------------------------------
 // Development only

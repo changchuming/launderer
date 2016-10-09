@@ -2,25 +2,27 @@ $('#anonymous').hide();
 $('#identified').hide();
 $('#register').hide();
 
-// $.post('/addcluster', {name: 'GARUDA'}, function(data, status, xhr) {
-//  console.log(data);
+server = 'http://128.199.172.201:3000';
 
-//  $.post('/addmachine', {clustername: 'GARUDA', type: 'Dryer', timeout: '1800'}, function(data, status, xhr) {
-//    console.log(data);
-//  });
+$.post(server + '/addcluster', {name: 'GARUDA'}, function(data, status, xhr) {
+ console.log(data);
 
-//  $.post('/addmachine', {clustername: 'GARUDA', type: 'Dryer', timeout: '1800'}, function(data, status, xhr) {
-//    console.log(data);
-//  });
+ $.post(server + '/addmachine', {clustername: 'GARUDA', type: 'Dryer', timeout: '1800'}, function(data, status, xhr) {
+   console.log(data);
+ });
 
-//  $.post('/addmachine', {clustername: 'GARUDA', type: 'Washer', timeout: '2100'}, function(data, status, xhr) {
-//    console.log(data);
-//  });
+ $.post(server + '/addmachine', {clustername: 'GARUDA', type: 'Dryer', timeout: '1800'}, function(data, status, xhr) {
+   console.log(data);
+ });
 
-//  $.post('/addmachine', {clustername: 'GARUDA', type: 'Washer', timeout: '2100'}, function(data, status, xhr) {
-//    console.log(data);
-//  });
-// });
+ $.post(server + '/addmachine', {clustername: 'GARUDA', type: 'Washer', timeout: '2100'}, function(data, status, xhr) {
+   console.log(data);
+ });
+
+ $.post(server + '/addmachine', {clustername: 'GARUDA', type: 'Washer', timeout: '2100'}, function(data, status, xhr) {
+   console.log(data);
+ });
+});
 
 // $.post('/adduser', {id:'00000000', name: 'lol', number: '00000000'}, function(data, status, xhr) {
 //  console.log(data);
