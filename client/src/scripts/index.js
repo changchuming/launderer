@@ -19,12 +19,12 @@ vueVM.machines.push({type: 'Washer', timeout: 1800, image: '../img/washer.png', 
 
 var setMachineUsage = function (clustername, index) {
   $.post('/getuserid', function (data, status, xhr) {
-    console.log(data)
+    console.log(data);
   });
   $.post(server + '/setmachineusage', {clustername: clustername, index: index, userid: index}, function(data, status, xhr) {
    console.log(data);
   });
-}
+};
 
 // $.post(server + '/addcluster', {name: vueVM.title}, function(data, status, xhr) {
 //   vueVM.machines.forEach(function(machine) {
