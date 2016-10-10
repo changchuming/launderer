@@ -111,34 +111,45 @@ exports.addMachine = function(req, res) {
 // Set last user of machine
 //##############################################################################################
 exports.setMachineUsage = function(req, res) {
-	// Create array if not exist
-	if (!jobTimers[req.body.clustername])
-		jobTimers[req.body.clustername] = [];
-	
-	// Set new job timer
-	if (jobTimers[req.body.clustername][req.body.index])
-		clearTimeout(jobTimers[req.body.clustername][req.body.index]);
-	jobTimers[req.body.clustername][req.body.index] = setTimeout(alertMachineUser, cluster.machines[req.body.index].timeout*1000,
-		req.body.clustername, req.body.index);
+	database.getMachine(req.body.clustername, req.body.index, function(err, cluster) {
+		if (err || !cluster) {
+			if (err)
+				console.log(err);
+			res.send(false);
+		}
+		else {
+			// Create array if not exist
+			if (!jobTimers[req.body.clustername])
+				jobTimers[req.body.clustername] = [];
+			
+			// Set new job timer
+			if (jobTimers[req.body.clustername][req.body.index])
+				clearTimeout(jobTimers[req.body.clustername][req.body.index]);
+			jobTimers[req.body.clustername][req.body.index] = setTimeout(alertMachineUser, cluster.machines[req.body.index].timeout*1000,
+				req.body.clustername, req.body.index);
 
-	// Save starting time
-	if (!jobTimeStart[req.body.clustername])
-		jobTimeStart[req.body.clustername] = [];
-	jobTimeStart[req.body.clustername][req.body.index] = moment();
+			// Save starting time
+			if (!jobTimeStart[req.body.clustername])
+				jobTimeStart[req.body.clustername] = [];
+			jobTimeStart[req.body.clustername][req.body.index] = moment();
 
-	// Set user
-	if (req.body.userid) {
-		database.upsertMachineField(req.body.clustername, req.body.index, 'userid', req.body.userid, function(err, cluster) {
-			if (err || !cluster) {
-				if (err)
-					console.log(err);
-				res.send(false);
-			}
-			else {
+			// Set user
+			if (req.body.userid) {
+				database.upsertMachineField(req.body.clustername, req.body.index, 'userid', req.body.userid, function(err, cluster) {
+					if (err || !cluster) {
+						if (err)
+							console.log(err);
+						res.send(false);
+					}
+					else {
+						res.send(true);
+					}
+				});
+			} else {
 				res.send(true);
 			}
-		});
-	}
+		}
+	})
 }
 
 //##############################################################################################
