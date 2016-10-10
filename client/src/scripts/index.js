@@ -2,7 +2,7 @@ $('#anonymous').hide();
 $('#identified').hide();
 $('#register').hide();
 
-server = 'http://128.199.172.201:3000';
+var server = 'http://128.199.172.201:3000';
 
 var vueVM = new Vue({
   el: '#cluster',
