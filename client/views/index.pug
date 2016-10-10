@@ -2,13 +2,13 @@ extends layout
 
 block styles
 block content
-  #cluster.container
-    #four.container(v-if='machines.length == 4')
-      .machine.col-md-3(v-for='machine in machines')
-    #five.container(v-if='machines.length == 5')
-      .machine.col-md-2(v-for='machine in machines')
   .main
     .main-body
+      #cluster
+        #four(v-if='(machines.length == 4)')
+          .machinecontainer(v-for='machine in machines', v-bind:style="{ width: 100/machines.length + '%' }")
+            .machinetext {{machine.type}}: {{machine.state}}
+            img.machine(v-bind:src="machine.image", v-on:click="setMachineUsage(title, machines.indexOf(machine)+1)", alt="Picture of machine", style='width:100%,height:auto;')
       #register
         .input-group
           span.input-group-addon @

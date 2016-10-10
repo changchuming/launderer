@@ -32,7 +32,7 @@ var index = require('./routes');
 //----------------------------------------------------------------------------------------------
 // Express - All environments
 //----------------------------------------------------------------------------------------------
-var port = process.env.PORT || 80;
+var port = process.env.PORT || 30;
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
@@ -91,3 +91,5 @@ app.use('/', router);
 router.get('/', index.display);
 
 router.get('/about', index.about);
+
+router.post('/getuserid', index.getuserid);

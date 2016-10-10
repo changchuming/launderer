@@ -3,24 +3,30 @@
   text-align: center;
 }
 
-.main {
-    padding-top: 50px !important;
-}
-
 #register {
     padding-left: 6em;
     padding-right: 6em;
 }
 
-#cluster, html, body{
+.main {
+    padding-top: 15vh;
     height: 100%;
 }
 
-.machine {
+#cluster, #four, #five, html, body{
     height: 100%;
-    background-size: cover !important;                      /* <------ */
-    background-repeat: no-repeat !important;
-    background-position: center center !important; 
+}
+
+.machinecontainer {
+    float: left;
+    height: 100%;
+}
+
+.machinetext {
+    font-family: Lora,"Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 2vw;
+    font-weight: bold;
+    text-align: center;
 }
 
 .message {
