@@ -111,8 +111,8 @@ exports.addMachine = function(req, res) {
 // Set last user of machine
 //##############################################################################################
 exports.setMachineUsage = function(req, res) {
-	database.getMachine(req.body.clustername, req.body.index, function(err, cluster) {
-		if (err || !cluster) {
+	database.getMachine(req.body.clustername, req.body.index, function(err, machine) {
+		if (err || !machine) {
 			if (err)
 				console.log(err);
 			res.send(false);
@@ -125,7 +125,7 @@ exports.setMachineUsage = function(req, res) {
 			// Set new job timer
 			if (jobTimers[req.body.clustername][req.body.index])
 				clearTimeout(jobTimers[req.body.clustername][req.body.index]);
-			jobTimers[req.body.clustername][req.body.index] = setTimeout(alertMachineUser, cluster.machines[req.body.index].timeout*1000,
+			jobTimers[req.body.clustername][req.body.index] = setTimeout(alertMachineUser, machine.timeout*1000,
 				req.body.clustername, req.body.index);
 
 			// Save starting time
