@@ -1837,7 +1837,7 @@
     text-align: center;
 }
 
-.message {
+#message {
     font-size: 2em !important;
     font-weight: bold;
 }

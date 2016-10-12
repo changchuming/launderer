@@ -33,9 +33,16 @@ exports.about = function(req, res){
 exports.getuserid = function(req, res) {
 	// executes `pwd`
 	child = exec("nfc-list | grep UID", function (error, stdout, stderr) {
-  		res.send(stdout);
-		if (error !== null) {
+	    if (error !== null) {
 	    	console.log('exec error: ' + error);
+	    	res.send(false);
+	  	} else {
+		    var uid = stdout.substring(stdout.indexOf(':')+2, stdout.indexOf(':')+23);
+	    	uid = uid.replace(/\s+/g, "");
+	    	if (uid != '')
+	  			res.send(uid);
+	  		else
+	  			res.send(false);
 	  	}
 	});
 }

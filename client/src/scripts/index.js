@@ -1,7 +1,3 @@
-$('#anonymous').hide();
-$('#identified').hide();
-$('#register').hide();
-
 var server = 'http://128.199.172.201:3000';
 
 var vueVM = new Vue({
@@ -18,13 +14,85 @@ vueVM.machines.push({type: 'Washer', timeout: 1800, image: '../img/washer.png', 
 vueVM.machines.push({type: 'Washer', timeout: 1800, image: '../img/washer.png', state: 'In use'});
 
 var setMachineUsage = function (clustername, index) {
-  $.post('/getuserid', function (data, status, xhr) {
-    console.log(data);
-  });
-  $.post(server + '/setmachineusage', {clustername: clustername, index: index, userid: index}, function(data, status, xhr) {
-   console.log(data);
+  $.post('/getuserid', function (uid, status, xhr) {
+    if (uid) {
+      $.post(server + '/checkuser', {id: uid}, function (data, status, xhr) {
+        if (data) {
+          showIdentified(data);
+          console.log(data);
+        } else {
+          newUser.clustername = clustername;
+          newUser.index = index;
+          newUser.uid = uid;
+          showRegister();
+          console.log(data);
+        }
+      });
+    } else {
+      $.post(server + '/setmachineusage', {clustername: clustername, index: index}, function(data, status, xhr) {
+        showAnonymous();
+        console.log(data);
+      });
+    }
   });
 };
+
+var newUser = {
+  register: function() {
+    $.post(server + '/adduser', {id: this.uid, name: $('#name').val(), number: '+65' + $('number').val()}, function(data, status, xhr) {
+      if (data) {
+        $.post(server + '/setmachineusage', {clustername: this.clustername, index: this.index, userid: this.uid}, function(data, status, xhr) {
+          console.log(data);
+        });
+      } else {
+        
+      }
+    });
+  }
+}
+
+var showAnonymous = function() {
+  $('#message').text('No identity detected. The timer has been set.');
+
+  $('#cluster').hide();
+  $('#register').hide();
+  setTimeout(showCluster, 2000);
+}
+
+var showIdentified = function(username) {
+  $('#message').text('Hi ' + username + ', you will be notified when your laundry is done.');
+
+  $('#cluster').hide();
+  $('#register').hide();
+  setTimeout(showCluster, 2000);
+};
+
+var showRegister = function() {
+  $('#message').text('New user detected. Please register.');
+  $('#name').text('');
+  $('#number').text('');
+
+  $('#cluster').hide();
+  $('#register').show();
+  setTimeout(showCluster, 30000);
+};
+
+var showCluster = function() {
+  $('#message').text('');
+
+  $('#cluster').show();
+  $('#register').hide();
+};
+
+var showError = function() {
+  $('#message').text('An error occurred. Please try again.');
+
+  $('#cluster').hide();
+  $('#register').hide();
+  setTimeout(showCluster, 2000);
+}
+
+showCluster();
 
 // $.post(server + '/addcluster', {name: vueVM.title}, function(data, status, xhr) {
 //   vueVM.machines.forEach(function(machine) {

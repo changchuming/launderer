@@ -43,7 +43,7 @@ exports.checkUser = function(req, res) {
 		else if (!user) {
 			res.send(false);
 		} else {
-			res.send(true);
+			res.send(user.name);
 		}
 	});
 }
@@ -216,7 +216,6 @@ var alertMachineUser = function(clustername, index) {
 					if (err)
 						console.log(err);
 				} else {
-				  	// var message = 'Your laundry is done on ' + moment().format("h:mm:ss a, dddd, MMMM Do YYYY" + '.');
 					sms.sendSMS(message, user.number, function(err, message) {
 						if (err || !message) {
 							if (err)
