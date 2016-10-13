@@ -182,7 +182,6 @@ exports.getMachineUsage = function(req, res) {
 			res.send(false);
 		}
 		else {
-			console.log(machine);
 			// If anonymous
 			if (machine.userid == '00000000')
 				returnUsage(res, req.body.clustername, req.body.index, 'Anon', machine.timeout);
@@ -208,7 +207,7 @@ var returnUsage = function(res, clustername, index, username, timeout) {
 		jobTimeStart[clustername] = [];
 	// Get machine's time start and calculate how much time is left
 	if (jobTimeStart[clustername][index]) {
-		var timestart = moment(jobTimeStart[lustername][index]);
+		var timestart = moment(jobTimeStart[clustername][index]);
 		var timeleft = timeout - moment().diff(timestart, 'seconds');
 		res.send({username: username, timeleft: timeleft, timeout: timeout});
 	} else {

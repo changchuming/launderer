@@ -42,7 +42,7 @@ $.post('/getallclusters', function(data, status, xhr) {
 
 					var timeleft = moment.duration(data.timeleft, 'seconds');
 
-					clusterVM.machines.push({
+					clusterVM.machines[cluster.machines.indexOf(machine)] = {
 						type: machine.type, 
 						username: username, 
 						timeleft: moment.duration(data.timeleft, 'seconds'),
@@ -53,7 +53,7 @@ $.post('/getallclusters', function(data, status, xhr) {
 						percent: function () {
 							return this.timeleft.asSeconds()/this.timeout*100;
 						}
-					});
+					};
 				});
 			});
 			vueVM.clusters.push(clusterVM);
