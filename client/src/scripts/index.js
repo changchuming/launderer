@@ -52,17 +52,20 @@ var vueVM = new Vue({
 });
 
 var newUser = {
+  clustername: '',
+  index: 0;
+  uid: '',
   register: function() {
     $.post(server + '/adduser', {id: this.uid, name: $('#name').val(), number: '+65' + $('#number').val()}, function(data, status, xhr) {
       console.log(this.uid);
       console.log($('#name').val());
-      console.log('+65' + $('number').val());
+      console.log('+65' + $('#number').val());
       if (data) {
         $.post(server + '/setmachineusage', {clustername: this.clustername, index: this.index, userid: this.uid}, function(data, status, xhr) {
           console.log(data);
         });
       } else {
-        
+        console.log('An error occurred');
       }
     });
   }
