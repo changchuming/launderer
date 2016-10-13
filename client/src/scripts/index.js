@@ -51,6 +51,20 @@ var vueVM = new Vue({
   }
 });
 
+var newUser = {
+  register: function() {
+    $.post(server + '/adduser', {id: this.uid, name: $('#name').val(), number: '+65' + $('number').val()}, function(data, status, xhr) {
+      if (data) {
+        $.post(server + '/setmachineusage', {clustername: this.clustername, index: this.index, userid: this.uid}, function(data, status, xhr) {
+          console.log(data);
+        });
+      } else {
+        
+      }
+    });
+  }
+}
+
 vueVM.machines.push({type: 'Dryer', timeout: 1800, image: '../img/dryer.png', state: 'Idle'});
 vueVM.machines.push({type: 'Dryer', timeout: 1800, image: '../img/dryer.png', state: 'Idle'});
 vueVM.machines.push({type: 'Washer', timeout: 1800, image: '../img/washer.png', state: 'Idle'});
@@ -79,21 +93,9 @@ var setMachineUsage = function (clustername, index) {
   });
 };
 
-var newUser = {
-  register: function() {
-    $.post(server + '/adduser', {id: this.uid, name: $('#name').val(), number: '+65' + $('number').val()}, function(data, status, xhr) {
-      if (data) {
-        $.post(server + '/setmachineusage', {clustername: this.clustername, index: this.index, userid: this.uid}, function(data, status, xhr) {
-          console.log(data);
-        });
-      } else {
-        
-      }
-    });
-  }
-}
-
-
+$('#submit').click(function() {
+  newUser.register();
+})
 // $.post(server + '/addcluster', {name: vueVM.title}, function(data, status, xhr) {
 //   vueVM.machines.forEach(function(machine) {
 //      $.post(server + '/addmachine', {clustername: vueVM.title, type: machine.type, timeout: machine.timeout}, function(data, status, xhr) {
