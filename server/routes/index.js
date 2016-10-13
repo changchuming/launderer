@@ -265,7 +265,7 @@ var alertMachineUser = function(clustername, index) {
 			console.log(err);
 		} else if (machine.userid && machine.userid != '00000000') {
 		  	var message = 'Your laundry is done on ' + moment().format("h:mm:ss a, dddd, MMMM Do YYYY" + '.');
-			database.getUserField(req.body.id, 'number', function (err, user){
+			database.getUserField(machine.userid, 'number', function (err, user){
 				if (err || !user) {
 					if (err)
 						console.log(err);

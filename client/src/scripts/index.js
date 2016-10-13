@@ -83,7 +83,7 @@ var registerNewUser =  function() {
   });
 };
 
-vueVM.machines.push({type: 'Dryer', timeout: 1800, image: '../img/dryer.png', state: 0});
+vueVM.machines.push({type: 'Dryer', timeout: 18, image: '../img/dryer.png', state: 0});
 vueVM.machines.push({type: 'Dryer', timeout: 1800, image: '../img/dryer.png', state: 0});
 vueVM.machines.push({type: 'Washer', timeout: 1800, image: '../img/washer.png', state: 0});
 vueVM.machines.push({type: 'Washer', timeout: 1800, image: '../img/washer.png', state: 0});
