@@ -114,7 +114,7 @@ var setMachineUsage = function(clustername, index) {
       $.post(server + '/checkuser', {id: uid}, function (data, status, xhr) {
         // If user is in database, set machine usage
         if (data) {
-          $.post(server + '/setmachineusage', {clustername: clustername, index: index}, function(result, status, xhr) {
+          $.post(server + '/setmachineusage', {clustername: clustername, index: index, userid: uid}, function(result, status, xhr) {
             // If error
             if (!result) {
               showError('Error setting job, please try again!');

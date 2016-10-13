@@ -25,7 +25,7 @@ var getMachineUsage = function(cluster, index, clusterVM) {
 	if (cluster.machines.length > index) {
 		$.post('/getmachineusage', {clustername: cluster.name, index: index}, function(data, status, xhr) {
 			var username;
-			if (!data) {
+			if (!data.username) {
 				username = "Anon";
 			}
 			else {
