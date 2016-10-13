@@ -133,21 +133,24 @@ exports.setMachineUsage = function(req, res) {
 				jobTimeStart[req.body.clustername] = [];
 			jobTimeStart[req.body.clustername][req.body.index] = moment();
 
+			// Check if user defined
+			var userid;
+			if (!req.body.userid)
+				userid = req.body.userid;
+			else
+				userid = '00000000';
+
 			// Set user
-			if (req.body.userid) {
-				database.upsertMachineField(req.body.clustername, req.body.index, 'userid', req.body.userid, function(err, cluster) {
-					if (err || !cluster) {
-						if (err)
-							console.log(err);
-						res.send(false);
-					}
-					else {
-						res.send(true);
-					}
-				});
-			} else {
-				res.send(true);
-			}
+			database.upsertMachineField(req.body.clustername, req.body.index, 'userid', userid, function(err, cluster) {
+				if (err || !cluster) {
+					if (err)
+						console.log(err);
+					res.send(false);
+				}
+				else {
+					res.send(true);
+				}
+			});
 		}
 	})
 }
@@ -179,26 +182,37 @@ exports.getMachineUsage = function(req, res) {
 			res.send(false);
 		}
 		else {
-			var userid = machine.userid;
-			database.getUserField(machine.userid, 'name', function (err, user){
-				if (err || !user) {
-					res.send(false);
-					if (err)
-						console.log(err);
-				} else {
-					if (!jobTimeStart[req.body.clustername])
-						jobTimeStart[req.body.clustername] = [];
-					if (jobTimeStart[req.body.clustername][req.body.index]) {
-						var timestart = moment(jobTimeStart[req.body.clustername][req.body.index]);
-						var timeleft = machine.timeout - moment().diff(timestart, 'seconds');
-						res.send({username: user.name, timeleft: timeleft, timeout: machine.timeout});
+			// If anonymous
+			if (machine.userid == '00000000')
+				returnUsage(res, req.body.clustername, req.body.index, 'Anon', machine.timeout);
+			// Else get user name
+			else {
+				database.getUserField(machine.userid, 'name', function (err, user){
+					if (err || !user) {
+						res.send(false);
+						if (err)
+							console.log(err);
 					} else {
-						res.send({username: user.name, timeleft: 0, timeout: machine.timeout});
+						returnUsage(res, req.body.clustername, req.body.index, user.name, machine.timeout);
 					}
-				}
-			});
+				});
+			}
 		}
 	});
+}
+
+var returnUsage(res, clustername, index, username, timeout) {
+	// Create cluster's timer array if not exist
+	if (!jobTimeStart[clustername])
+		jobTimeStart[clustername] = [];
+	// Get machine's time start and calculate how much time is left
+	if (jobTimeStart[clustername][index]) {
+		var timestart = moment(jobTimeStart[lustername][index]);
+		var timeleft = timeout - moment().diff(timestart, 'seconds');
+		res.send({username: username, timeleft: timeleft, timeout: timeout});
+	} else {
+		res.send({username: username, timeleft: 0, timeout: timeout});
+	}
 }
 
 //##############################################################################################

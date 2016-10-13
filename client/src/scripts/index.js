@@ -25,7 +25,6 @@ var setMachineUsage = function (clustername, index) {
           newUser.index = index;
           newUser.uid = uid;
           showRegister();
-          console.log(data);
         }
       });
     } else {
