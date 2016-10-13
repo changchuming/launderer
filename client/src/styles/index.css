@@ -15,6 +15,7 @@
 .main-body {
     float: left;
     height:100%;
+    width: 100%;
 }
 
 #cluster, #four, #five, html, body{
@@ -34,12 +35,17 @@
 }
 
 #message {
+    margin: auto;
+    width: 50%;
+    border: 3px solid green;
+    padding: 10px;
     font-size: 2em !important;
     font-weight: bold;
 }
 
 body {
-    background: url(../img/intro-bg.jpg) repeat bottom center;
+    background: url(../img/intro-bg.jpg) no-repeat center center fixed; ;
+    background-size: cover;
 }
 
 /* Keyboard */

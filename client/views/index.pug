@@ -7,7 +7,7 @@ block content
       #cluster
         #four(v-if='(machines.length == 4)')
           .machinecontainer(v-for='machine in machines', v-bind:style="{ width: 100/machines.length + '%' }")
-            .machinetext {{machine.type}}: </br> {{machine.state}}
+            .machinetext {{machine.state}}
             img.machine(v-bind:src="machine.image", v-on:click="setMachineUsage(title, machines.indexOf(machine))", alt="Picture of machine", style='width:100%;height:auto;')
       #register
         .input-group
@@ -20,7 +20,7 @@ block content
           span.input-group-btn
             button.btn.btn-default(type='button' v-on:click="newUser.register()") Go!
         | <br>
-      p#message 
+      h1#message 
 block footer
 block scripts
   // Server variables

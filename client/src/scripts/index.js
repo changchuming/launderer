@@ -1,3 +1,46 @@
+var showCluster = function() {
+  $('#message').text('');
+
+  $('#cluster').show();
+  $('#register').hide();
+};
+
+var showAnonymous = function() {
+  $('#message').text('No identity detected. The timer has been set.');
+
+  $('#cluster').hide();
+  $('#register').hide();
+  setTimeout(showCluster, 3000);
+}
+
+var showIdentified = function(username) {
+  $('#message').text('Hi ' + username + ', you will be notified when your laundry is done.');
+
+  $('#cluster').hide();
+  $('#register').hide();
+  setTimeout(showCluster, 3000);
+};
+
+var showRegister = function() {
+  $('#message').text('New user detected. Please register.');
+  $('#name').text('');
+  $('#number').text('');
+
+  $('#cluster').hide();
+  $('#register').show();
+  setTimeout(showCluster, 30000);
+};
+
+var showError = function() {
+  $('#message').text('An error occurred. Please try again.');
+
+  $('#cluster').hide();
+  $('#register').hide();
+  setTimeout(showCluster, 3000);
+}
+
+showCluster();
+
 var server = 'http://128.199.172.201:3000';
 
 var vueVM = new Vue({
@@ -50,48 +93,6 @@ var newUser = {
   }
 }
 
-var showAnonymous = function() {
-  $('#message').text('No identity detected. The timer has been set.');
-
-  $('#cluster').hide();
-  $('#register').hide();
-  setTimeout(showCluster, 2000);
-}
-
-var showIdentified = function(username) {
-  $('#message').text('Hi ' + username + ', you will be notified when your laundry is done.');
-
-  $('#cluster').hide();
-  $('#register').hide();
-  setTimeout(showCluster, 2000);
-};
-
-var showRegister = function() {
-  $('#message').text('New user detected. Please register.');
-  $('#name').text('');
-  $('#number').text('');
-
-  $('#cluster').hide();
-  $('#register').show();
-  setTimeout(showCluster, 30000);
-};
-
-var showCluster = function() {
-  $('#message').text('');
-
-  $('#cluster').show();
-  $('#register').hide();
-};
-
-var showError = function() {
-  $('#message').text('An error occurred. Please try again.');
-
-  $('#cluster').hide();
-  $('#register').hide();
-  setTimeout(showCluster, 2000);
-}
-
-showCluster();
 
 // $.post(server + '/addcluster', {name: vueVM.title}, function(data, status, xhr) {
 //   vueVM.machines.forEach(function(machine) {

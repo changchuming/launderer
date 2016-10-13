@@ -30,33 +30,39 @@ $.post('/getallclusters', function(data, status, xhr) {
 				machines: []
 			};
 
-			cluster.machines.forEach(function(machine) {
-				$.post('/getmachineusage', {clustername: cluster.name, index: cluster.machines.indexOf(machine)}, function(data, status, xhr) {
-					var username;
-					if (!data) {
-						username = "None";
-					}
-					else {
-						username = data.username;
-					}
-
-					var timeleft = moment.duration(data.timeleft, 'seconds');
-
-					clusterVM.machines[cluster.machines.indexOf(machine)] = {
-						type: machine.type, 
-						username: username, 
-						timeleft: moment.duration(data.timeleft, 'seconds'),
-						timeout: data.timeout,
-						display: function() {
-							return moment(this.timeleft._data).format('mm:ss');
-						},
-						percent: function () {
-							return this.timeleft.asSeconds()/this.timeout*100;
-						}
-					};
-				});
-			});
+			// Recurse through all machines and get their usage
+			getMachineUsage(cluster, 0, clusterVM);
 			vueVM.clusters.push(clusterVM);
 		});
 	}
 });
+
+var getMachineUsage = function(cluster, index, clusterVM) {
+	if (cluster.machines.length > index) {
+		$.post('/getmachineusage', {clustername: cluster.name, index: index}, function(data, status, xhr) {
+			var username;
+			if (!data) {
+				username = "None";
+			}
+			else {
+				username = data.username;
+			}
+
+			var timeleft = moment.duration(data.timeleft, 'seconds');
+
+			clusterVM.machines.push({
+				type: cluster.machines[index].type, 
+				username: username, 
+				timeleft: moment.duration(data.timeleft, 'seconds'),
+				timeout: data.timeout,
+				display: function() {
+					return moment(this.timeleft._data).format('mm:ss');
+				},
+				percent: function () {
+					return this.timeleft.asSeconds()/this.timeout*100;
+				}
+			});
+			getMachineUsage(cluster, index+1, clusterVM);
+		});
+	}
+}
