@@ -21,28 +21,12 @@ setInterval(function(){
 	});
 }, 1000);
 
-$.post('/getallclusters', function(data, status, xhr) {
-	if (data) {
-		clusters = data;
-		clusters.forEach(function(cluster) {
-			var clusterVM = {
-				name: cluster.name,
-				machines: []
-			};
-
-			// Recurse through all machines and get their usage
-			getMachineUsage(cluster, 0, clusterVM);
-			vueVM.clusters.push(clusterVM);
-		});
-	}
-});
-
 var getMachineUsage = function(cluster, index, clusterVM) {
 	if (cluster.machines.length > index) {
 		$.post('/getmachineusage', {clustername: cluster.name, index: index}, function(data, status, xhr) {
 			var username;
 			if (!data) {
-				username = "None";
+				username = "Anon";
 			}
 			else {
 				username = data.username;
@@ -65,4 +49,20 @@ var getMachineUsage = function(cluster, index, clusterVM) {
 			getMachineUsage(cluster, index+1, clusterVM);
 		});
 	}
-}
+};
+
+$.post('/getallclusters', function(data, status, xhr) {
+	if (data) {
+		clusters = data;
+		clusters.forEach(function(cluster) {
+			var clusterVM = {
+				name: cluster.name,
+				machines: []
+			};
+
+			// Recurse through all machines and get their usage
+			getMachineUsage(cluster, 0, clusterVM);
+			vueVM.clusters.push(clusterVM);
+		});
+	}
+});

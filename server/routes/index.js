@@ -159,15 +159,52 @@ exports.setMachineUsage = function(req, res) {
 // Clear machine timer
 //##############################################################################################
 exports.clearMachineUsage = function(req, res) {
+	database.getMachine(req.body.clustername, req.body.index, function(err, machine) {
+		if (err || !machine) {
+			if (err)
+				console.log(err);
+			res.send(false);
+		}
+		else {
+			// If anonymous
+			if (machine.userid == '00000000') {
+				clear(req, res);
+			} else if (machine.userid == req.body.userid) {
+				clear(req, res);
+			} else {
+				res.send(false);
+			}
+		}
+	});
+}
+
+var clear = function(req, res) {
 	// Clear time start if exists
 	if (!jobTimeStart[req.body.clustername])
 		jobTimeStart[req.body.clustername] = [];
-	jobTimeStart[req.body.clustername][req.body.index] = false;
+	if (jobTimeStart[req.body.clustername][req.body.index]) {
+		jobTimeStart[req.body.clustername][req.body.index] = false;
+	} 
 
 	// Clear job if exists
 	if (!jobTimers[req.body.clustername])
 		jobTimers[req.body.clustername] = [];
-	clearTimeout(jobTimers[req.body.clustername][req.body.index]);
+	if (jobTimers[req.body.cluster][req.body.index]) {
+		clearTimeout(jobTimers[req.body.clustername][req.body.index]);
+		jobTimers[req.body.clustername][req.body.index] = false;
+	}
+
+	// Clear machine's userid
+	database.upsertMachineField(req.body.clustername, req.body.index, 'userid', '00000000', function(err, cluster) {
+		if (err || !cluster) {
+			if (err)
+				console.log(err);
+			res.send(false);
+		}
+		else {
+			res.send(true);
+		}
+	});
 }
 
 
@@ -184,7 +221,7 @@ exports.getMachineUsage = function(req, res) {
 		else {
 			// If anonymous
 			if (machine.userid == '00000000')
-				returnUsage(res, req.body.clustername, req.body.index, 'Anon', machine.timeout);
+				returnUsage(res, req.body.clustername, req.body.index, false, machine.timeout);
 			// Else get user name
 			else {
 				database.getUserField(machine.userid, 'name', function (err, user){
@@ -201,6 +238,9 @@ exports.getMachineUsage = function(req, res) {
 	});
 }
 
+//##############################################################################################
+// Return machine usage
+//##############################################################################################
 var returnUsage = function(res, clustername, index, username, timeout) {
 	// Create cluster's timer array if not exist
 	if (!jobTimeStart[clustername])
