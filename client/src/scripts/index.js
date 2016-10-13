@@ -122,6 +122,7 @@ var setMachineUsage = function(clustername, index) {
             } else {
               vueVM.machines[index].state = 1;
               showIdentified(data);
+              console.log(vueVM.machines[index].timeout*1000);
               jobTimers[index] = setTimeout(resetMachine, vueVM.machines[index].timeout*1000, index);
               console.log(result);
             }
@@ -142,6 +143,8 @@ var setMachineUsage = function(clustername, index) {
           showError('Error setting job, please try again!');
         } else {
           vueVM.machines[index].state = 1;
+          console.log(vueVM.machines[index].timeout*1000);
+          jobTimers[index] = setTimeout(resetMachine, vueVM.machines[index].timeout*1000, index);
           showAnonymous();        
           console.log(data);
         }
