@@ -135,7 +135,7 @@ exports.setMachineUsage = function(req, res) {
 
 			// Check if user defined
 			var userid;
-			if (!req.body.userid)
+			if (req.body.userid)
 				userid = req.body.userid;
 			else
 				userid = '00000000';
@@ -182,6 +182,7 @@ exports.getMachineUsage = function(req, res) {
 			res.send(false);
 		}
 		else {
+			console.log(machine);
 			// If anonymous
 			if (machine.userid == '00000000')
 				returnUsage(res, req.body.clustername, req.body.index, 'Anon', machine.timeout);
