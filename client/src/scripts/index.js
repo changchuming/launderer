@@ -53,7 +53,7 @@ var vueVM = new Vue({
 
 var newUser = {
   register: function() {
-    $.post(server + '/adduser', {id: this.uid, name: $('#name').val(), number: '+65' + $('number').val()}, function(data, status, xhr) {
+    $.post(server + '/adduser', {id: this.uid, name: $('#name').val(), number: '+65' + $('#number').val()}, function(data, status, xhr) {
       console.log(this.uid);
       console.log($('#name').val());
       console.log('+65' + $('number').val());
@@ -99,13 +99,14 @@ var setMachineUsage = function (clustername, index) {
 $('#submit').click(function() {
   newUser.register();
 });
-// $.post(server + '/addcluster', {name: vueVM.title}, function(data, status, xhr) {
-//   vueVM.machines.forEach(function(machine) {
-//      $.post(server + '/addmachine', {clustername: vueVM.title, type: machine.type, timeout: machine.timeout}, function(data, status, xhr) {
-//        console.log(data);
-//      });
-//   });
-// });
+
+$.post(server + '/addcluster', {name: vueVM.title}, function(data, status, xhr) {
+  vueVM.machines.forEach(function(machine) {
+     $.post(server + '/addmachine', {clustername: vueVM.title, type: machine.type, timeout: machine.timeout}, function(data, status, xhr) {
+       console.log(data);
+     });
+  });
+});
 
 // $.post(server + '/adduser', {id:'00000000', name: 'lol', number: '00000000'}, function(data, status, xhr) {
 //  console.log(data);
