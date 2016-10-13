@@ -121,6 +121,8 @@ var setMachineUsage = function(clustername, index) {
             // If success
             } else {
               vueVM.machines[index].state = 1;
+              console.log(vueVM.machines[index]);
+              console.log(index);
               console.log(vueVM.machines[index].state);
               showIdentified(data);
               jobTimers[index] = setTimeout(resetMachine, vueVM.machines[index].timeout, index);
