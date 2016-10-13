@@ -31,6 +31,18 @@ var showRegister = function() {
   setTimeout(showCluster, 30000);
 };
 
+var showCancelled = function(username) {
+  if (username) {
+    $('#message').text('Hi ' + username + ', your laundry job has been cancelled.');
+  } else {
+    $('#message').text('Your laundry job has been cancelled.');
+  }
+
+  $('#cluster').hide();
+  $('#register').hide();
+  setTimeout(showCluster, 3000);
+}
+
 var showError = function() {
   $('#message').text('An error occurred. Please try again.');
 
@@ -51,17 +63,15 @@ var vueVM = new Vue({
   }
 });
 
+var gClusterName, gIndex, gUid;
 var newUser = {
-  clustername: '',
-  index: 0;
-  uid: '',
   register: function() {
-    $.post(server + '/adduser', {id: this.uid, name: $('#name').val(), number: '+65' + $('#number').val()}, function(data, status, xhr) {
-      console.log(this.uid);
+    $.post(server + '/adduser', {id: uid, name: $('#name').val(), number: '+65' + $('#number').val()}, function(data, status, xhr) {
+      console.log(gUid);
       console.log($('#name').val());
       console.log('+65' + $('#number').val());
       if (data) {
-        $.post(server + '/setmachineusage', {clustername: this.clustername, index: this.index, userid: this.uid}, function(data, status, xhr) {
+        $.post(server + '/setmachineusage', {clustername: gClustername, index: gIndex, userid: gUid}, function(data, status, xhr) {
           console.log(data);
         });
       } else {
@@ -84,9 +94,9 @@ var setMachineUsage = function (clustername, index) {
           showIdentified(data);
           console.log(data);
         } else {
-          newUser.clustername = clustername;
-          newUser.index = index;
-          newUser.uid = uid;
+          gClustername = clustername;
+          gIndex = index;
+          gUid = uid;
           showRegister();
         }
       });
