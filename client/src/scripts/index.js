@@ -171,7 +171,7 @@ var clearMachineUsage = function(clustername, index) {
 var toggleMachineUsage = function (clustername, index) {
   // If idle
   console.log('toggle'+vueVM.machines[index].state);
-  console.log('toggle'+vueVM.machinies[index]);
+  console.log('toggle'+vueVM.machines[index]);
   console.log('toggle'+index);
   if (!vueVM.machines[index].state) {
     setMachineUsage(clustername, index);
