@@ -51,7 +51,7 @@ var showError = function() {
   setTimeout(showCluster, 3000);
 }
 
-showRegister();
+showCluster();
 
 var server = 'http://128.199.172.201:3000';
 
@@ -66,7 +66,7 @@ var vueVM = new Vue({
 var gClusterName, gIndex, gUid;
 var newUser = {
   register: function() {
-    $.post(server + '/adduser', {id: uid, name: $('#name').val(), number: '+65' + $('#number').val()}, function(data, status, xhr) {
+    $.post(server + '/adduser', {id: gUid, name: $('#name').val(), number: '+65' + $('#number').val()}, function(data, status, xhr) {
       console.log(gUid);
       console.log($('#name').val());
       console.log('+65' + $('#number').val());
