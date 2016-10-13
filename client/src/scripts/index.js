@@ -121,11 +121,8 @@ var setMachineUsage = function(clustername, index) {
             // If success
             } else {
               vueVM.machines[index].state = 1;
-              console.log('set'+vueVM.machines[index]);
-              console.log('set'+index);
-              console.log('set'+vueVM.machines[index].state);
               showIdentified(data);
-              jobTimers[index] = setTimeout(resetMachine, vueVM.machines[index].timeout, index);
+              jobTimers[index] = setTimeout(resetMachine, vueVM.machines[index].timeout*1000, index);
               console.log(result);
             }
           });
@@ -170,9 +167,6 @@ var clearMachineUsage = function(clustername, index) {
 
 var toggleMachineUsage = function (clustername, index) {
   // If idle
-  console.log('toggle'+vueVM.machines[index].state);
-  console.log('toggle'+vueVM.machines[index]);
-  console.log('toggle'+index);
   if (!vueVM.machines[index].state) {
     setMachineUsage(clustername, index);
   } else {
