@@ -76,17 +76,17 @@ var registerNewUser =  function() {
         if (!result2) {
           showError('Error starting job, please try again!');
         }
-        vueVM.machines[gIndex].state = 'In use';
+        vueVM.machines[gIndex].state = 1;
         showIdentified($('#name').val());
       });
     }
   });
 };
 
-vueVM.machines.push({type: 'Dryer', timeout: 1800, image: '../img/dryer.png', state: 'Idle'});
-vueVM.machines.push({type: 'Dryer', timeout: 1800, image: '../img/dryer.png', state: 'Idle'});
-vueVM.machines.push({type: 'Washer', timeout: 1800, image: '../img/washer.png', state: 'Idle'});
-vueVM.machines.push({type: 'Washer', timeout: 1800, image: '../img/washer.png', state: 'In use'});
+vueVM.machines.push({type: 'Dryer', timeout: 1800, image: '../img/dryer.png', state: 0});
+vueVM.machines.push({type: 'Dryer', timeout: 1800, image: '../img/dryer.png', state: 0});
+vueVM.machines.push({type: 'Washer', timeout: 1800, image: '../img/washer.png', state: 0});
+vueVM.machines.push({type: 'Washer', timeout: 1800, image: '../img/washer.png', state: 0});
 
 $.post(server + '/addcluster', {name: vueVM.title}, function(data, status, xhr) {
   vueVM.machines.forEach(function(machine) {
@@ -103,7 +103,7 @@ $.post(server + '/addcluster', {name: vueVM.title}, function(data, status, xhr) 
 var jobTimers = [];
 
 var resetMachine = function(index) {
-  vueVM.machines[index].state = 'Idle';
+  vueVM.machines[index].state = 0;
 };
 
 var setMachineUsage = function(clustername, index) {
@@ -120,7 +120,7 @@ var setMachineUsage = function(clustername, index) {
               showError('Error setting job, please try again!');
             // If success
             } else {
-              vueVM.machines[index].state = 'In use';
+              vueVM.machines[index].state = 1;
               console.log(vueVM.machines[index].state);
               showIdentified(data);
               jobTimers[index] = setTimeout(resetMachine, vueVM.machines[index].timeout, index);
@@ -142,7 +142,7 @@ var setMachineUsage = function(clustername, index) {
         if (!data) {
           showError('Error setting job, please try again!');
         } else {
-          vueVM.machines[index].state = 'In use';
+          vueVM.machines[index].state = 1;
           showAnonymous();        
           console.log(data);
         }
@@ -158,7 +158,7 @@ var clearMachineUsage = function(clustername, index) {
       if (!result) {
         showError('Error cancelling job, please try again! You can only cancel jobs started with your own card.');
       } else {
-        vueVM.machines[index].state = 'Idle';
+        vueVM.machines[index].state = 0;
         showCancelled();
         clearTimeout(jobTimers[index]);
       }
@@ -168,7 +168,8 @@ var clearMachineUsage = function(clustername, index) {
 
 var toggleMachineUsage = function (clustername, index) {
   // If idle
-  if (vueVM.machines[index].state === 'Idle') {
+  console.log('asdf'+vueVM.machines[index].state);
+  if (!vueVM.machines[index].state) {
     setMachineUsage(clustername, index);
   } else {
     clearMachineUsage(clustername, index);
