@@ -121,6 +121,7 @@ var setMachineUsage = function(clustername, index) {
             // If success
             } else {
               vueVM.machines[index].state = 'In use';
+              console.log(vueVM.machines[index].state);
               showIdentified(data);
               jobTimers[index] = setTimeout(resetMachine, vueVM.machines[index].timeout, index);
               console.log(result);
@@ -157,6 +158,7 @@ var clearMachineUsage = function(clustername, index) {
       if (!result) {
         showError('Error cancelling job, please try again! You can only cancel jobs started with your own card.');
       } else {
+        vueVM.machines[index].state = 'Idle';
         showCancelled();
         clearTimeout(jobTimers[index]);
       }
