@@ -189,7 +189,7 @@ var clear = function(req, res) {
 	// Clear job if exists
 	if (!jobTimers[req.body.clustername])
 		jobTimers[req.body.clustername] = [];
-	if (jobTimers[req.body.cluster][req.body.index]) {
+	if (jobTimers[req.body.clustername][req.body.index]) {
 		clearTimeout(jobTimers[req.body.clustername][req.body.index]);
 		jobTimers[req.body.clustername][req.body.index] = false;
 	}

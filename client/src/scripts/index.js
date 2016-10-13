@@ -68,14 +68,17 @@ var vueVM = new Vue({
 
 var gClusterName, gIndex, gUid;
 var registerNewUser =  function() {
-  $.post(server + '/adduser', {id: gUid, name: $('#name').val(), number: '+65' + $('#number').val()}, function(data, status, xhr) {
-    if (data) {
-      $.post(server + '/setmachineusage', {clustername: gClusterName, index: gIndex, userid: gUid}, function(data, status, xhr) {
-        console.log(data);
+  $.post(server + '/adduser', {id: gUid, name: $('#name').val(), number: '+65' + $('#number').val()}, function(result, status, xhr) {
+    if (!result) {
+      showError('Error adding user, please try again!');
+    } else {
+      $.post(server + '/setmachineusage', {clustername: gClusterName, index: gIndex, userid: gUid}, function(result2, status, xhr) {
+        if (!result2) {
+          showError('Error starting job, please try again!');
+        }
+        vueVM.machines[gIndex].state = 'In use';
         showIdentified($('#name').val());
       });
-    } else {
-      showError('Error adding user, please try again!');
     }
   });
 };
@@ -117,6 +120,7 @@ var setMachineUsage = function(clustername, index) {
               showError('Error setting job, please try again!');
             // If success
             } else {
+              vueVM.machines[index].state = 'In use';
               showIdentified(data);
               jobTimers[index] = setTimeout(resetMachine, vueVM.machines[index].timeout, index);
               console.log(result);
@@ -137,7 +141,8 @@ var setMachineUsage = function(clustername, index) {
         if (!data) {
           showError('Error setting job, please try again!');
         } else {
-          showAnonymous();
+          vueVM.machines[index].state = 'In use';
+          showAnonymous();        
           console.log(data);
         }
       });
