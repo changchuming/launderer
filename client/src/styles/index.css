@@ -13,6 +13,7 @@
 }
 
 .main-body {
+    padding-top: 10vw;
     float: left;
     height:100%;
     width: 100%;
@@ -42,7 +43,7 @@ html, body{
     margin: auto;
     width: 50%;
     padding: 10px;
-    font-size: 2em !important;
+    font-size: 1.5em !important;
     font-weight: bold;
 }
 

@@ -126,7 +126,7 @@ $('#name').keyboard({
     customLayout: {
       'normal': [
         'q w e r t y u i o p {bksp}',
-        'a s d f g h j k l {enter}',
+        'a s d f g h j k l {accept}',
         'z x c v b n m'
       ]
     },
@@ -155,7 +155,7 @@ $('#number').keyboard({
         '1 2 3',
         '4 5 6',
         '7 8 9',
-        '{bksp} 0 {enter}'
+        '{bksp} 0 {accept}'
       ]
     },
     usePreview: false,
