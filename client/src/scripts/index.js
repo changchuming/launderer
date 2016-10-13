@@ -95,7 +95,7 @@ var setMachineUsage = function (clustername, index) {
 
 $('#submit').click(function() {
   newUser.register();
-})
+});
 // $.post(server + '/addcluster', {name: vueVM.title}, function(data, status, xhr) {
 //   vueVM.machines.forEach(function(machine) {
 //      $.post(server + '/addmachine', {clustername: vueVM.title, type: machine.type, timeout: machine.timeout}, function(data, status, xhr) {
