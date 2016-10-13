@@ -201,7 +201,7 @@ exports.getMachineUsage = function(req, res) {
 	});
 }
 
-var returnUsage(res, clustername, index, username, timeout) {
+var returnUsage = function(res, clustername, index, username, timeout) {
 	// Create cluster's timer array if not exist
 	if (!jobTimeStart[clustername])
 		jobTimeStart[clustername] = [];
