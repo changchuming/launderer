@@ -1,4 +1,4 @@
-# Launderer server
+# Launderer
 
 ## Usage
 
