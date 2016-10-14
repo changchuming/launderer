@@ -31,7 +31,7 @@ var showRegister = function() {
 
   $('#cluster').hide();
   $('#register').show();
-  setTimeout(showCluster, 30000);
+  setTimeout(showCluster, 60000);
 };
 
 var showCancelled = function(username) {
