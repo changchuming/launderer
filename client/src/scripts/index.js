@@ -70,7 +70,7 @@ var vueVM = new Vue({
 
 var gClusterName, gIndex, gUid;
 var registerNewUser =  function() {
-  if ($('#name').val()= '') {
+  if ($('#name').val() == '') {
     $('#message').text('Name cannot be blank!');
   } else if ($('#number').val().length != 8) {
     $('#message').text('Number must be 8 digits!');
@@ -91,10 +91,10 @@ var registerNewUser =  function() {
   }
 };
 
-vueVM.machines.push({type: 'Dryer', timeout: 18, image: '../img/dryer.png', state: 0});
 vueVM.machines.push({type: 'Dryer', timeout: 1800, image: '../img/dryer.png', state: 0});
-vueVM.machines.push({type: 'Washer', timeout: 1800, image: '../img/washer.png', state: 0});
-vueVM.machines.push({type: 'Washer', timeout: 1800, image: '../img/washer.png', state: 0});
+vueVM.machines.push({type: 'Dryer', timeout: 1800, image: '../img/dryer.png', state: 0});
+vueVM.machines.push({type: 'Washer', timeout: 2100, image: '../img/washer.png', state: 0});
+vueVM.machines.push({type: 'Washer', timeout: 2100, image: '../img/washer.png', state: 0});
 
 $.post(server + '/addcluster', {name: vueVM.title}, function(data, status, xhr) {
   vueVM.machines.forEach(function(machine) {
