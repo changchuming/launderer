@@ -50,7 +50,9 @@ var showError = function(error) {
   setTimeout(showCluster, 3000);
 };
 
-showCluster();
+$(document).ready(function() {
+  showCluster();
+});
 
 // #####################################################################################
 // Setup
@@ -68,19 +70,25 @@ var vueVM = new Vue({
 
 var gClusterName, gIndex, gUid;
 var registerNewUser =  function() {
-  $.post(server + '/adduser', {id: gUid, name: $('#name').val(), number: '+65' + $('#number').val()}, function(result, status, xhr) {
-    if (!result) {
-      showError('Error adding user, please try again!');
-    } else {
-      $.post(server + '/setmachineusage', {clustername: gClusterName, index: gIndex, userid: gUid}, function(result2, status, xhr) {
-        if (!result2) {
-          showError('Error starting job, please try again!');
-        }
-        vueVM.machines[gIndex].state = 1;
-        showIdentified($('#name').val());
-      });
-    }
-  });
+  if ($('#name').val()= '') {
+    $('#message').text('Name cannot be blank!');
+  } else if ($('#number').val().length != 8) {
+    $('#message').text('Number must be 8 digits!');
+  } else {
+    $.post(server + '/adduser', {id: gUid, name: $('#name').val(), number: '+65' + $('#number').val()}, function(result, status, xhr) {
+      if (!result) {
+        showError('Error adding user, please try again!');
+      } else {
+        $.post(server + '/setmachineusage', {clustername: gClusterName, index: gIndex, userid: gUid}, function(result2, status, xhr) {
+          if (!result2) {
+            showError('Error starting job, please try again!');
+          }
+          vueVM.machines[gIndex].state = 1;
+          showIdentified($('#name').val());
+        });
+      }
+    });
+  }
 };
 
 vueVM.machines.push({type: 'Dryer', timeout: 18, image: '../img/dryer.png', state: 0});
@@ -94,6 +102,12 @@ $.post(server + '/addcluster', {name: vueVM.title}, function(data, status, xhr) 
        console.log(data);
      });
   });
+});
+
+
+// Prevent dragging
+$('#cluster').on('dragstart', function(event) {
+ event.preventDefault(); 
 });
 
 // #####################################################################################
