@@ -26,8 +26,8 @@ var showIdentified = function(username) {
 
 var showRegister = function() {
   $('#message').text('New user detected. Please register.');
-  $('#name').text('');
-  $('#number').text('');
+  $('#name').val('');
+  $('#number').val('');
 
   $('#cluster').hide();
   $('#register').show();
@@ -121,6 +121,7 @@ var resetMachine = function(index) {
 };
 
 var setMachineUsage = function(clustername, index) {
+  $('#cluster').hide();
   // Get user id
   $.post('/getuserid', function (uid, status, xhr) {
     // If there is user id
