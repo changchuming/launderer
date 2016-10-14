@@ -68,29 +68,6 @@ var vueVM = new Vue({
   }
 });
 
-var gClusterName, gIndex, gUid;
-var registerNewUser =  function() {
-  if ($('#name').val() == '') {
-    $('#message').text('Name cannot be blank!');
-  } else if ($('#number').val().length != 8) {
-    $('#message').text('Number must be 8 digits!');
-  } else {
-    $.post(server + '/adduser', {id: gUid, name: $('#name').val(), number: '+65' + $('#number').val()}, function(result, status, xhr) {
-      if (!result) {
-        showError('Error adding user, please try again!');
-      } else {
-        $.post(server + '/setmachineusage', {clustername: gClusterName, index: gIndex, userid: gUid}, function(result2, status, xhr) {
-          if (!result2) {
-            showError('Error starting job, please try again!');
-          }
-          vueVM.machines[gIndex].state = 1;
-          showIdentified($('#name').val());
-        });
-      }
-    });
-  }
-};
-
 vueVM.machines.push({type: 'Dryer', timeout: 1800, image: '../img/dryer.png', state: 0});
 vueVM.machines.push({type: 'Dryer', timeout: 1800, image: '../img/dryer.png', state: 0});
 vueVM.machines.push({type: 'Washer', timeout: 2100, image: '../img/washer.png', state: 0});
@@ -119,6 +96,30 @@ var jobTimers = [];
 var resetMachine = function(index) {
   console.log(index+' timeout');
   vueVM.machines[index].state = 0;
+};
+
+var gClusterName, gIndex, gUid;
+var registerNewUser =  function() {
+  if ($('#name').val() == '') {
+    $('#message').text('Name cannot be blank!');
+  } else if ($('#number').val().length != 8) {
+    $('#message').text('Number must be 8 digits!');
+  } else {
+    $.post(server + '/adduser', {id: gUid, name: $('#name').val(), number: '+65' + $('#number').val()}, function(result, status, xhr) {
+      if (!result) {
+        showError('Error adding user, please try again!');
+      } else {
+        $.post(server + '/setmachineusage', {clustername: gClusterName, index: gIndex, userid: gUid}, function(result2, status, xhr) {
+          if (!result2) {
+            showError('Error starting job, please try again!');
+          }
+          vueVM.machines[gIndex].state = 1;
+          jobTimers[gIndex] = setTimeout(resetMachine, vueVM.machines[gIndex].timeout*1000, gIndex);
+          showIdentified($('#name').val());
+        });
+      }
+    });
+  }
 };
 
 var setMachineUsage = function(clustername, index) {
