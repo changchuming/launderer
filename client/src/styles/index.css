@@ -75,11 +75,11 @@ body {
 }
 
 .ui-keyboard-button {
-    min-width: 4.4em !important;
+    min-width: 8vw !important;
     height: 4.5em !important;
 }
 
 .ui-keyboard-text {
-    font-size: 1.6em !important;
+    font-size: 4vw !important;
     color: #000;
 }
