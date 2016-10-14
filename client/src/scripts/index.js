@@ -117,6 +117,7 @@ $('#cluster').on('dragstart', function(event) {
 var jobTimers = [];
 
 var resetMachine = function(index) {
+  console.log(index+' timeout');
   vueVM.machines[index].state = 0;
 };
 
@@ -177,8 +178,8 @@ var clearMachineUsage = function(clustername, index) {
         showError('Error cancelling job, please try again! You can only cancel jobs started with your own card.');
       } else {
         vueVM.machines[index].state = 0;
-        showCancelled();
         clearTimeout(jobTimers[index]);
+        showCancelled();
       }
     });
   });  
