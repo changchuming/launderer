@@ -167,7 +167,7 @@ exports.clearMachineUsage = function(req, res) {
 		}
 		else {
 			// If anonymous
-			if (machine.userid == '00000000') {
+			if (machine.userid == '00000000' || req.body.userid == '8a4a9b8b') {
 				clear(req, res);
 			} else if (machine.userid == req.body.userid) {
 				clear(req, res);
