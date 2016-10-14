@@ -204,8 +204,15 @@ $('#name').keyboard({
     customLayout: {
       'normal': [
         'q w e r t y u i o p {bksp}',
-        'a s d f g h j k l {accept}',
-        'z x c v b n m'
+        'a s d f g h j k l',
+        'z x c v b n m',
+        '{shift} {space} {accept}'
+      ],
+      'shift' : [
+        'Q W E R T Y U I O P {bksp}',
+        'A S D F G H J K L',
+        'Z X C V B N M',
+        '{shift} {space} {accept}'
       ]
     },
     usePreview: false,
