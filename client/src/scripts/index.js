@@ -169,6 +169,7 @@ var setMachineUsage = function(clustername, index) {
 };
 
 var clearMachineUsage = function(clustername, index) {
+  $('#cluster').hide();
   $.post('/getuserid', function (uid, status, xhr) {
     $.post(server + '/clearmachineusage', {clustername: clustername, index: index, userid: uid}, function(result, status, xhr) {
       // If error
