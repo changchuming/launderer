@@ -51,7 +51,7 @@ var showError = function(error) {
 };
 
 $(document).ready(function() {
-  showCluster();
+  showCluster;
 });
 
 // #####################################################################################
