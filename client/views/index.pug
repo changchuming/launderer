@@ -7,9 +7,10 @@ block content
       #cluster
         #four(v-if='(machines.length == 4)')
           .machinecontainer(v-for='machine in machines', v-bind:style="{ width: 100/machines.length + '%' }")
-            .machinetext(v-if="machine.state") In Use
-            .machinetext(v-if="!machine.state") Idle
-            img.machine(v-bind:src="machine.image", v-on:click="toggleMachineUsage(title, machines.indexOf(machine))", alt="Picture of machine", style='width:100%;height:auto;')
+            .machinetext(v-if="machine.state" style='color:#CB4335') In Use
+            .machinetext(v-if="!machine.state"  style='color:#28B463') Idle
+            img.machine(v-bind:src="machine.state ? machine.inuse : machine.idle", v-on:click="toggleMachineUsage(title, machines.indexOf(machine))", alt="Picture of machine", style='width:100%;height:auto;')
+            .usertext(style='color:#fff') {{machine.user}}
       #register
         .input-group
           span.input-group-addon @

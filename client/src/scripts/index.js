@@ -68,18 +68,18 @@ var vueVM = new Vue({
   }
 });
 
-vueVM.machines.push({type: 'Dryer', timeout: 1800, image: '../img/dryer.png', state: 0});
-vueVM.machines.push({type: 'Dryer', timeout: 1800, image: '../img/dryer.png', state: 0});
-vueVM.machines.push({type: 'Washer', timeout: 2100, image: '../img/washer.png', state: 0});
-vueVM.machines.push({type: 'Washer', timeout: 2100, image: '../img/washer.png', state: 0});
+vueVM.machines.push({type: 'Dryer', timeout: 1800, inuse: '../img/dryer-inuse.png', idle: '../img/dryer-idle.png', state: 0, user: 'Anon'});
+vueVM.machines.push({type: 'Dryer', timeout: 1800, inuse: '../img/dryer-inuse.png', idle: '../img/dryer-idle.png', image: '../img/dryer.png', state: 0, user: 'Anon'});
+vueVM.machines.push({type: 'Washer', timeout: 2100, inuse: '../img/washer-inuse.png', idle: '../img/washer-idle.png', image: '../img/washer.png', state: 0, user: 'Anon'});
+vueVM.machines.push({type: 'Washer', timeout: 2100, inuse: '../img/washer-inuse.png', idle: '../img/washer-idle.png', image: '../img/washer.png', state: 0, user: 'Anon'});
 
-$.post(server + '/addcluster', {name: vueVM.title}, function(data, status, xhr) {
-  vueVM.machines.forEach(function(machine) {
-     $.post(server + '/addmachine', {clustername: vueVM.title, type: machine.type, timeout: machine.timeout}, function(data, status, xhr) {
-       console.log(data);
-     });
-  });
-});
+// $.post(server + '/addcluster', {name: vueVM.title}, function(data, status, xhr) {
+//   vueVM.machines.forEach(function(machine) {
+//      $.post(server + '/addmachine', {clustername: vueVM.title, type: machine.type, timeout: machine.timeout}, function(data, status, xhr) {
+//        console.log(data);
+//      });
+//   });
+// });
 
 
 // Prevent dragging
@@ -113,6 +113,7 @@ var registerNewUser =  function() {
           if (!result2) {
             showError('Error starting job, please try again!');
           }
+          vueVM.machines[gIndex].user = $('#name').val();
           vueVM.machines[gIndex].state = 1;
           jobTimers[gIndex] = setTimeout(resetMachine, vueVM.machines[gIndex].timeout*1000, gIndex);
           showIdentified($('#name').val());
@@ -137,6 +138,7 @@ var setMachineUsage = function(clustername, index) {
               showError('Error setting job, please try again!');
             // If success
             } else {
+              vueVM.machines[index].user = data;
               vueVM.machines[index].state = 1;
               showIdentified(data);
               console.log(vueVM.machines[index].timeout*1000);
@@ -159,6 +161,7 @@ var setMachineUsage = function(clustername, index) {
         if (!data) {
           showError('Error setting job, please try again!');
         } else {
+          vueVM.machines[index].user = 'Anon';
           vueVM.machines[index].state = 1;
           console.log(vueVM.machines[index].timeout*1000);
           jobTimers[index] = setTimeout(resetMachine, vueVM.machines[index].timeout*1000, index);

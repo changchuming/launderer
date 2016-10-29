@@ -1851,6 +1851,15 @@ html, body{
     font-size: 4vw;
     font-weight: bold;
     text-align: center;
+    color: #0f0;
+}
+
+.usertext {
+    font-family: Lora,"Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 2vw;
+    font-weight: bold;
+    text-align: center;
+    color: #0f0;
 }
 
 #message {
@@ -1862,7 +1871,8 @@ html, body{
 }
 
 body {
-    background: url(../img/intro-bg.jpg) no-repeat center center fixed; ;
+    color: #fff;
+    background: #000000 no-repeat center center fixed; ;
     background-size: cover;
 }
 
