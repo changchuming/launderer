@@ -181,6 +181,7 @@ var clearMachineUsage = function(clustername, index) {
       if (!result) {
         showError('Error cancelling job, please try again! You can only cancel jobs started with your own card.');
       } else {
+        vueVM.machines[index].user = 'Anon';
         vueVM.machines[index].state = 0;
         clearTimeout(jobTimers[index]);
         showCancelled();
