@@ -1,4 +1,6 @@
 # Launderer
+## TODO
+Replace callbacks with promises
 
 ## Usage
 
