@@ -1,6 +1,6 @@
 # Launderer
 ## TODO
-Replace callbacks with promises
+If anyone would like to refactor the messy code and teach me industry best practices or save me from callback hell, please let me know at changchuming@gmail.com. Thank you.
 
 ## Usage
 
